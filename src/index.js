@@ -35,7 +35,7 @@ function initThreeClickEvent() {
     //点击射线
     var raycaster = new Raycaster();
     var mouse = new Vector2();
-    document.getElementById("container").addEventListener('mousedown', onDocumentMouseDown, false);
+    document.getElementBy("container").addEventListener('mousedown', onDocumentMouseDown, false);
     function onDocumentMouseDown(event) {
         event.preventDefault();
         mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
