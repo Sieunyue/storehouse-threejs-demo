@@ -37,7 +37,7 @@ module.exports = function (options) {
                 filename: 'css/[name].[hash].css',
                 chunkFilename: 'css/[id].[hash].css',
             }),
-            new webpack.HotModuleReplacementPlugin(),
+            // new webpack.HotModuleReplacementPlugin(),
         ],
     };
 };
