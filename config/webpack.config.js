@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const webpack = require('webpack');
 module.exports = function (options) {
     return {
         mode: options.mode,
@@ -15,9 +16,10 @@ module.exports = function (options) {
                 {
                     test: /\.(sa|sc|c)ss$/,
                     use: [
-                        {
-                            loader: MiniCssExtractPlugin.loader,
-                        },
+                        // {
+                        //     loader: MiniCssExtractPlugin.loader,
+                        // },
+                        'style-loader',
                         'css-loader',
                         'sass-loader',
                     ],
@@ -35,6 +37,7 @@ module.exports = function (options) {
                 filename: 'css/[name].[hash].css',
                 chunkFilename: 'css/[id].[hash].css',
             }),
+            new webpack.HotModuleReplacementPlugin(),
         ],
     };
 };

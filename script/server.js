@@ -19,7 +19,7 @@ const server = new webpackDev(compiler, options);
 
 const port = options.port || 3000;
 
-server.listen(port, '127.0.0.1', (err) => {
+server.listen(port, '0.0.0.0', (err) => {
     if(err){
         console.log(err);
     }
