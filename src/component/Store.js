@@ -12,9 +12,9 @@ import {
 class Store {
     constructor(scene, config) {
         const defaultConfig = {
-            width: 1200,
-            height: 600,
-            depth: 120,
+            width: 100,
+            height: 37,
+            depth: 7,
             rotate: 4,
         }
 
@@ -37,7 +37,7 @@ class Store {
         this.store.add(await drawWalls(10, height, depth, width/2, 0, depth/2));
         this.store.rotateX(-(Math.PI / rotate));
 
-        this.store.position.set(0,0,width/2)
+        // this.store.position.set(0,0,width/2)
         scene.add(this.store);
 
     }
