@@ -24,6 +24,19 @@ module.exports = function (options) {
                         'sass-loader',
                     ],
                 },
+                {
+                    test: /\.(png|svg|jpg|gif)$/,
+                    use: [
+                        // ...
+                        {
+                            loader: 'file-loader', //是指定使用的loader和loader的配置参数
+                            options: {
+                                // limit: 500, //是把小于500B的文件打成Base64的格式，写入JS
+                                name: 'images/[name]_[hash:7].[ext]',
+                            },
+                        },
+                    ],
+                },
             ],
         },
 

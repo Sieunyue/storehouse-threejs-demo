@@ -5,7 +5,7 @@ const webpack = require('webpack');
 
 const config = {
   devServer: {
-    port: 8080,
+    port: 8090,
     hot: true,
   },
   plugins: [

@@ -1,10 +1,12 @@
 import {BoxGeometry, MeshBasicMaterial, Mesh} from 'three';
 import {ClickEvent} from '../clickEvent';
+
+const geometry = new BoxGeometry(10, 20, 50);
+const material = new MeshBasicMaterial({color: 0xC8754A});
+
 class Archive{
     constructor(){
-        this._geometry = new BoxGeometry(.2, 1, 1);
-        this._material = new MeshBasicMaterial({color: 0xC8754A});
-        this._mesh = new Mesh(this._geometry, this._material);
+        this._mesh = new Mesh(geometry, material);
         ClickEvent.on('click', this._mesh, (obj) => {
             if(obj === this._mesh){
                 window.alert('档案详情');
