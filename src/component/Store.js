@@ -4,25 +4,21 @@ import {
     MeshLambertMaterial,
     Mesh,
     DoubleSide,
-    Object3D,
+    Group,
     TextureLoader,
     RepeatWrapping,
-    Line,
-    LineBasicMaterial,
-    Geometry,
-    Vector3,
 } from 'three';
 
 class Store {
     constructor(scene, config) {
         const defaultConfig = {
-            width: 100,
-            height: 80,
-            depth: 10,
+            width: 400,
+            height: 200,
+            depth: 20,
             // rotate: 4,
         }
 
-        this.store = new Object3D();
+        this.store = new Group();
         this.init(scene, Object.assign(defaultConfig, config));
     }
 
@@ -35,14 +31,12 @@ class Store {
 
         this.store.add(await drawFloor(width, height));
 
-        this.store.add(await drawWalls(width, 2, depth, 0, height/2, depth/2));
-        this.store.add(await drawWalls(width, 2, depth, 0, -(height/2), depth/2));
-        this.store.add(await drawWalls(2, height, depth, -(width/2)+1, 0, depth/2));
-        this.store.add(await drawWalls(2, height, depth, width/2-1, 0, depth/2));
-        // this.store.rotateX(-(Math.PI / rotate));
-        linexFun(scene)
-        lineyFun(scene)
-        linezFun(scene)
+        this.store.add(await drawWalls(width, 1, depth, 0, height/2, depth/2));
+        this.store.add(await drawWalls(width, 1, depth, 0, -(height/2), depth/2));
+        this.store.add(await drawWalls(1, height, depth, -(width/2), 0, depth/2));
+        this.store.add(await drawWalls(1, height, depth, width/2, 0, depth/2));
+        // this.store.rotateX((Math.PI/2));
+        this.store.position.set(0,-1, 0);
         // this.store.position.set(0,0,width/2)
         scene.add(this.store);
 
@@ -59,8 +53,8 @@ function drawFloor(w, h) {
             const gemotery = new PlaneGeometry(w,h);
             const material = new MeshLambertMaterial({
                 side: DoubleSide,
-                // color: '#D2D3D5'
-                map: texture
+                color: '#D2D3D5'
+                // map: texture
             });
 
             const mesh = new Mesh(gemotery, material);
@@ -73,6 +67,14 @@ function drawFloor(w, h) {
 
     // mesh.rotateX(-(Math.PI / 5));
 }
+const materials = [];
+for(let i = 0; i < 12; i++){
+    let color = i === 4? '#FDFDFD': '#9DB4D2';
+    materials.push(new MeshLambertMaterial({
+        side: DoubleSide,
+        color: color,
+    }))
+}
 
 function drawWalls(w, h, d, x, y, z) {
     return new Promise((resolve, reject) => {
@@ -81,69 +83,20 @@ function drawWalls(w, h, d, x, y, z) {
         // loader.load('../../public/static/wall.png', (texture) => {
             const gemotery = new BoxGeometry(w, h, d);
 
-            const material = new MeshLambertMaterial({
-                side: DoubleSide,
-                color: '#9DB4D2',
-                // color:0x00ffff
-            });
+            // const material = new MeshLambertMaterial({
+            //     side: DoubleSide,
+            //     color: '#9DB4D2',
+            //     // color:#FDFDFD
+            // });
 
-            const mesh = new Mesh(gemotery, material);
+            const mesh = new Mesh(gemotery, materials);
 
             // mesh.position.y = 0;
             mesh.position.set(x, y, z);
 
-            console.log(gemotery);
-
             resolve(mesh);
         // });
     });
-}
-
-function linexFun(scene){
-    var material = new LineBasicMaterial({
-        color: 0x000000
-    });
-
-    var geometry = new Geometry();
-    geometry.vertices.push(
-        new Vector3(-70, 0, 0),
-        new Vector3(100, 0, 0),
-    );
-
-    var line = new Line(geometry, material);
-    scene.add(line);
-}
-
-// y轴
-function lineyFun(scene){
-    var material = new LineBasicMaterial({
-        color: 0xFFFF00
-    });
-
-    var geometry = new Geometry();
-    geometry.vertices.push(
-        new Vector3(0, -70, 0),
-        new Vector3(0, 100, 0),
-    );
-
-    var line = new Line(geometry, material);
-    scene.add(line);
-}
-
-// z轴
-function linezFun(scene){
-    var material = new LineBasicMaterial({
-        color: 0x0000FF
-    });
-
-    var geometry = new Geometry();
-    geometry.vertices.push(
-        new Vector3(0, 0, -70),
-        new Vector3(0, 0, 100),
-    );
-
-    var line = new Line(geometry, material);
-    scene.add(line);
 }
 
 export default Store;

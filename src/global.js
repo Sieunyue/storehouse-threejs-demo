@@ -9,8 +9,10 @@ renderer.setClearColor(0xeeeeee, 1.0);
 renderer.shadowMap.enabled = true; 
 renderer.setSize( window.innerWidth, window.innerHeight );
 
-camera.position.set(0,50,60);
-camera.lookAt(0, 0, 0);
+
+camera.position.set(0,-200,200);
+camera.lookAt(0,0,0);
+
 // camera.position.z = 100;
 
 
