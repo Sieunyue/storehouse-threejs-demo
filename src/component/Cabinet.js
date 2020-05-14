@@ -2,33 +2,47 @@ import { BoxGeometry, MeshLambertMaterial, Mesh, Group, DoubleSide, Geometry, Ve
 import { ClickEvent } from '../clickEvent';
 // import {ClickEvent} from '../clickEvent';
 
-
-
 class Cabinet extends Group {
     constructor(config) {
         super();
         const defaultConfig = {
             width: 70,
             height: 40,
-            depth: 20,
-            click: ()=>{}
+            depth: 10,
+            click: ()=>{},
+            doubleClick: ()=>{}
         };
         this.config = Object.assign(defaultConfig, config);
         this.cabinet = undefined;
         this.init();
 
-        ClickEvent.on('click', this.cabinet, (obj) => {
-            if(this.cabinet.uuid === obj.uuid){
-                this.config.click(this);
-            }
-        });
+        
     }
 
     init() {
         const { width: w, height: h, depth: d } = this.config;
         this.cabinet = drawShell( w, d, h);
         this.add(this.cabinet);
-        this.position.set(0, 0, h/2+1); 
+        this.position.set(0, 0, h/2+1);
+        
+        ClickEvent.on('click', this.cabinet, (obj) => {
+            if(this.cabinet.uuid === obj.uuid){
+                this.config.click(this);
+            }
+        });
+
+        ClickEvent.on('doubleClick', this.cabinet, (obj) => {
+            if(this.cabinet.uuid === obj.uuid){
+                this.config.doubleClick(this);
+            }
+        })  
+    }
+
+    setDoubleClickFunc(fn){
+        if(!fn instanceof Function){
+            return;
+        }
+        this.config.doubleClick = fn;
     }
 }
 

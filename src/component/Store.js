@@ -35,7 +35,7 @@ class Store {
         this.store.add(await drawWalls(width, 1, depth, 0, -(height/2), depth/2));
         this.store.add(await drawWalls(1, height, depth, -(width/2), 0, depth/2));
         this.store.add(await drawWalls(1, height, depth, width/2, 0, depth/2));
-        // this.store.rotateX((Math.PI/2));
+        this.store.rotateX((Math.PI/2));
         this.store.position.set(0,-1, 0);
         // this.store.position.set(0,0,width/2)
         scene.add(this.store);
