@@ -24,7 +24,7 @@ document.body.appendChild( renderer.domElement );
 // Floor();
 // new Store(scene);
 // new Cabinet(scene);
-const cabinetGroup = new CabinetGroup();
+const cabinetGroup = new CabinetGroup({number:1});
 cabinetGroup.rotateX(Math.PI/2)
 
 scene.add(cabinetGroup);

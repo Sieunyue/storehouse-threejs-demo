@@ -4,11 +4,6 @@ import {scene, camera} from '../global'
 import TWEEN from '@tweenjs/tween.js';
 import Cabinet from './Cabinet';
 
-// const material = new MeshLambertMaterial({
-//     side: DoubleSide,
-//     color: '#FDFDFD',
-// });
-
 class CabinetGroup extends Group {
     constructor(config) {
         super();
@@ -46,7 +41,7 @@ class CabinetGroup extends Group {
 
         for (let i = 0; i < number; i++) {
             const cabinet = new Cabinet(cabinetConfig);
-            cabinet.position.y = i * 21;
+            cabinet.position.y = i * this.config.cabinetConfig.depth;
             this.add(cabinet);
         }
         this.position.y = -2;
