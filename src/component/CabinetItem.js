@@ -1,4 +1,15 @@
-import { MeshLambertMaterial, Mesh, Group, DoubleSide, Geometry, Vector3, Vector2,Face3, TextureLoader, RepeatWrapping } from 'three';
+import {
+    MeshLambertMaterial,
+    Mesh,
+    Group,
+    DoubleSide,
+    Geometry,
+    Vector3,
+    Vector2,
+    Face3,
+    TextureLoader,
+    RepeatWrapping,
+} from 'three';
 import { ClickEvent } from '../clickEvent';
 // import {ClickEvent} from '../clickEvent';
 
@@ -9,8 +20,8 @@ class CabinetItem extends Group {
             width: 7,
             height: 4,
             depth: 10,
-            posX: 0,
-            posY: 0,
+            posX: 20,
+            posY: 20,
             click: () => {},
             doubleClick: () => {},
         };
@@ -20,10 +31,10 @@ class CabinetItem extends Group {
     }
 
     async init() {
-        const { width: w, height: h, depth: d } = this.config;
+        const { width: w, height: h, depth: d, posX, posY } = this.config;
         this.cabinetItem = drawShell(w, d, h);
         this.add(this.cabinetItem);
-        this.position.set(0, 0, h / 2 + 1);
+        this.position.set(posX, 0, posY);
 
         // ClickEvent.on('click', this.cabinet, (obj) => {
         //     if (this.cabinet.uuid === obj.uuid) {
@@ -43,6 +54,10 @@ class CabinetItem extends Group {
             return;
         }
         this.config.doubleClick = fn;
+    }
+
+    createArchive(){
+        
     }
 }
 
@@ -66,25 +81,25 @@ function drawShell(w, h, d) {
 function generateGeometry(w, h, d) {
     const geometry = new Geometry();
     const v3 = [
-        new Vector3(-w / 2, -h / 2, d / 2), //0
-        new Vector3(w / 2, -h / 2, d / 2),
-        new Vector3(w / 2, h / 2, d / 2),
-        new Vector3(-w / 2, h / 2, d / 2),
+        new Vector3(0, 0, d), //0
+        new Vector3(w, 0, d),
+        new Vector3(w, h, d),
+        new Vector3(0, h, d),
 
-        new Vector3(-w / 2, -h / 2, -d / 2), //4
-        new Vector3(w / 2, -h / 2, -d / 2),
-        new Vector3(w / 2, h / 2, -d / 2),
-        new Vector3(-w / 2, h / 2, -d / 2),
+        new Vector3(0, 0, 0), //4
+        new Vector3(w, 0, 0),
+        new Vector3(w, h, 0),
+        new Vector3(0, h, 0),
 
-        new Vector3(-w / 2 - 1, -h / 2, d / 2 + 1), //8
-        new Vector3(w / 2 + 1, -h / 2, d / 2 + 1),
-        new Vector3(w / 2 + 1, h / 2, d / 2 + 1),
-        new Vector3(-w / 2 - 1, h / 2, d / 2 + 1),
+        new Vector3(0 - 1, 0, d + 1), //8
+        new Vector3(w + 1, 0, d + 1),
+        new Vector3(w + 1, h, d + 1),
+        new Vector3(0 - 1, h, d + 1),
 
-        new Vector3(-w / 2 - 1, -h / 2, -d / 2 - 1), //12
-        new Vector3(w / 2 + 1, -h / 2, -d / 2 - 1),
-        new Vector3(w / 2 + 1, h / 2, -d / 2 - 1),
-        new Vector3(-w / 2 - 1, h / 2, -d / 2 - 1),
+        new Vector3(0 - 1, 0, 0 - 1), //12
+        new Vector3(w + 1, 0, 0 - 1),
+        new Vector3(w + 1, h, 0 - 1),
+        new Vector3(0 - 1, h, 0 - 1),
     ];
     const faces = [
         new Face3(3, 0, 2),
@@ -96,14 +111,14 @@ function generateGeometry(w, h, d) {
         new Face3(7, 4, 3),
         new Face3(4, 0, 3),
 
-        new Face3(3+8, 0+8, 2+8),
-        new Face3(0+8, 1+8, 2+8),
-        new Face3(4+8, 5+8, 7+8),
-        new Face3(5+8, 6+8, 7+8),
-        new Face3(5+8, 6+8, 1+8),
-        new Face3(6+8, 2+8, 1+8),
-        new Face3(7+8, 4+8, 3+8),
-        new Face3(4+8, 0+8, 3+8),
+        new Face3(3 + 8, 0 + 8, 2 + 8),
+        new Face3(0 + 8, 1 + 8, 2 + 8),
+        new Face3(4 + 8, 5 + 8, 7 + 8),
+        new Face3(5 + 8, 6 + 8, 7 + 8),
+        new Face3(5 + 8, 6 + 8, 1 + 8),
+        new Face3(6 + 8, 2 + 8, 1 + 8),
+        new Face3(7 + 8, 4 + 8, 3 + 8),
+        new Face3(4 + 8, 0 + 8, 3 + 8),
 
         new Face3(0, 8, 12),
         new Face3(0, 4, 12),
@@ -129,10 +144,15 @@ function generateGeometry(w, h, d) {
 
     geometry.computeFaceNormals();
     geometry.computeVertexNormals();
-    const uv = [new Vector2(0,0),new Vector2(1,0),new Vector2(1,1),new Vector2(0,1)];
-    for(let i = 0; i < geometry.faces.length; i += 2){
-        geometry.faceVertexUvs[0][i] = [uv[0],uv[1],uv[3]];
-        geometry.faceVertexUvs[0][i+1] = [uv[1],uv[2],uv[3]];
+    const uv = [
+        new Vector2(0, 0),
+        new Vector2(1, 0),
+        new Vector2(1, 1),
+        new Vector2(0, 1),
+    ];
+    for (let i = 0; i < geometry.faces.length; i += 2) {
+        geometry.faceVertexUvs[0][i] = [uv[0], uv[1], uv[3]];
+        geometry.faceVertexUvs[0][i + 1] = [uv[1], uv[2], uv[3]];
     }
 
     return geometry;
