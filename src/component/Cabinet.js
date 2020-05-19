@@ -1,15 +1,6 @@
-import {
-    MeshLambertMaterial,
-    Mesh,
-    Group,
-    DoubleSide,
-    Geometry,
-    Vector3,
-    Face3,
-    TextureLoader,
-    RepeatWrapping,
-} from 'three';
+import { MeshLambertMaterial, Mesh, Group, DoubleSide, Geometry, Vector3, Vector2,Face3, TextureLoader, RepeatWrapping } from 'three';
 import { ClickEvent } from '../clickEvent';
+import CabinetItem from './CabinetItem'
 // import {ClickEvent} from '../clickEvent';
 
 class Cabinet extends Group {
@@ -45,7 +36,7 @@ class Cabinet extends Group {
             }
         });
 
-
+        this.createCabinet(4,3);
     }
 
     setDoubleClickFunc(fn) {
@@ -54,32 +45,48 @@ class Cabinet extends Group {
         }
         this.config.doubleClick = fn;
     }
+
+    createCabinet(row, col){
+        const w = this.config.width/col, h = this.config.height/row;
+        for(let i = 0; i< row; i++){
+            for(let j = 0; j < col; j++){
+            }
+        }
+    }
 }
 
- function drawShell(w, h, d) {
+function drawShell(w, h, d) {
     const geometry = generateGeometry(w, h, d);
-    const material = new MeshLambertMaterial({
-        side: DoubleSide,
-        color: '#E9E7E3',
-    });
-    // const loader = new TextureLoader();
+    const texture = new TextureLoader().load('../../public/static/c1.png');
 
+    const materials = [];
+    for (let i = 0; i < geometry.faces.length / 2; i++) {
+        materials.push(
+            new MeshLambertMaterial({
+                side: DoubleSide,
+                map: texture,
+            })
+        );
+    }
+    const mesh = new Mesh(geometry, materials);
+    return mesh;
     // return new Promise((resolve, reject) => {
-    //     loader.load('../../public/static/floor.png', (texture) => {
-    //         texture.wrapS = texture.wrapT = RepeatWrapping;
-    //         texture.repeat.set(1, 1);
-    //         const material = new MeshLambertMaterial({
-    //             side: DoubleSide,
-    //             // color: '#D2D3D5'
-    //             map: texture
-    //         });
+    //     // loader.load('../../public/static/floor.png', (texture) => {
+    //     //     texture.wrapS = texture.wrapT = RepeatWrapping;
+    //     //     texture.repeat.set(1, 1);
+    //     //     const materials = [];
+    //     //     for(let i = 0; i < geometry.faces.length/2; i++){
+    //     //         materials.push(new MeshLambertMaterial({
+    //     //             side: DoubleSide,
+    //     //             map: texture
+    //     //         }));
+    //     //     }
 
-    //         const mesh = new Mesh(geometry, material);
+    //     //     const mesh = new Mesh(geometry, materials);
 
-    //         resolve(mesh);
-    //     });
+    //     //     resolve(mesh);
+    //     // });
     // });
-    return new Mesh(geometry, material);
 }
 
 function generateGeometry(w, h, d) {
@@ -106,23 +113,23 @@ function generateGeometry(w, h, d) {
         new Vector3(-w / 2 - 1, h / 2, -d / 2 - 1),
     ];
     const faces = [
+        new Face3(3, 0, 2),
         new Face3(0, 1, 2),
-        new Face3(0, 2, 3),
-        new Face3(4, 5, 6),
-        new Face3(4, 6, 7),
-        new Face3(1, 2, 6),
-        new Face3(1, 5, 6),
-        new Face3(0, 3, 4),
-        new Face3(3, 4, 7),
+        new Face3(4, 5, 7),
+        new Face3(5, 6, 7),
+        new Face3(5, 6, 1),
+        new Face3(6, 2, 1),
+        new Face3(7, 4, 3),
+        new Face3(4, 0, 3),
 
-        new Face3(0 + 8, 1 + 8, 2 + 8),
-        new Face3(0 + 8, 2 + 8, 3 + 8),
-        new Face3(4 + 8, 5 + 8, 6 + 8),
-        new Face3(4 + 8, 6 + 8, 7 + 8),
-        new Face3(1 + 8, 2 + 8, 6 + 8),
-        new Face3(1 + 8, 5 + 8, 6 + 8),
-        new Face3(0 + 8, 3 + 8, 4 + 8),
-        new Face3(3 + 8, 4 + 8, 7 + 8),
+        new Face3(3+8, 0+8, 2+8),
+        new Face3(0+8, 1+8, 2+8),
+        new Face3(4+8, 5+8, 7+8),
+        new Face3(5+8, 6+8, 7+8),
+        new Face3(5+8, 6+8, 1+8),
+        new Face3(6+8, 2+8, 1+8),
+        new Face3(7+8, 4+8, 3+8),
+        new Face3(4+8, 0+8, 3+8),
 
         new Face3(0, 8, 12),
         new Face3(0, 4, 12),
@@ -148,6 +155,11 @@ function generateGeometry(w, h, d) {
 
     geometry.computeFaceNormals();
     geometry.computeVertexNormals();
+    const uv = [new Vector2(0,0),new Vector2(1,0),new Vector2(1,1),new Vector2(0,1)];
+    for(let i = 0; i < geometry.faces.length; i += 2){
+        geometry.faceVertexUvs[0][i] = [uv[0],uv[1],uv[3]];
+        geometry.faceVertexUvs[0][i+1] = [uv[1],uv[2],uv[3]];
+    }
 
     return geometry;
 }

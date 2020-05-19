@@ -15,7 +15,6 @@ class Store {
             width: 400,
             height: 200,
             depth: 20,
-            // rotate: 4,
         }
 
         this.store = new Group();
@@ -36,7 +35,7 @@ class Store {
         this.store.add(await drawWalls(1, height, depth, -(width/2), 0, depth/2));
         this.store.add(await drawWalls(1, height, depth, width/2, 0, depth/2));
         this.store.rotateX((Math.PI/2));
-        this.store.position.set(0,-1, 0);
+        this.store.position.set(0,0, 0);
         // this.store.position.set(0,0,width/2)
         scene.add(this.store);
 
@@ -53,7 +52,7 @@ function drawFloor(w, h) {
             const gemotery = new PlaneGeometry(w,h);
             const material = new MeshLambertMaterial({
                 side: DoubleSide,
-                color: '#D2D3D5'
+                // color: '#D2D3D5'
                 // map: texture
             });
 

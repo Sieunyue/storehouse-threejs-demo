@@ -7,6 +7,7 @@ const config = {
   devServer: {
     port: 8090,
     hot: true,
+    disableHostCheck: true
   },
   plugins: [
     new webpack.NamedModulesPlugin(),
