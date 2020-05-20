@@ -1,21 +1,23 @@
 import {BoxGeometry, MeshBasicMaterial, Mesh} from 'three';
 import {ClickEvent} from '../clickEvent';
+import {archiveConf} from '@/config';
 
-const geometry = new BoxGeometry(10, 20, 50);
+
+const geometry = new BoxGeometry(archiveConf.width, archiveConf.height, archiveConf.depth);
 const material = new MeshBasicMaterial({color: 0xC8754A});
 
-class Archive{
-    constructor(){
-        this._mesh = new Mesh(geometry, material);
-        ClickEvent.on('click', this._mesh, (obj) => {
-            if(obj === this._mesh){
-                window.alert('档案详情');
-            }
-        })
-    }
+class Archive extends Mesh{
+    constructor(config){
+        super();
+        this.config = config;
+        this.material = material;
+        this.geometry = geometry;
 
-    getMesh(){
-        return this._mesh;
+        ClickEvent.on('doubleClick', this, (obj) => {
+            if (this.uuid === obj.uuid) {
+                alert('点击案卷');
+            }
+        });
     }
 }
 
