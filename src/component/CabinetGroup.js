@@ -1,4 +1,4 @@
-import { Group} from 'three';
+import { Group, MeshBasicMaterial, PlaneGeometry, Mesh} from 'three';
 import TWEEN from '@tweenjs/tween.js';
 import Cabinet from './Cabinet';
 import {cabinetGroupConf} from '@/config';
@@ -11,11 +11,14 @@ class CabinetGroup extends Group {
             number: cabinetGroupConf.number,
         };
         this.config = Object.assign(defaultConfig, config);
+        this.lineMaterial = new MeshBasicMaterial( { color: 0x00 } );
+        this.lineGeometry = new PlaneGeometry(1,1);
         this.init();
     }
 
     init() {
         const { number} = this.config;
+        let lineLength = 0, lineDist = 0, linePosZ = 0;
 
         for (let i = 0; i < number; i++) {
             const cabinet = new Cabinet({
@@ -24,9 +27,18 @@ class CabinetGroup extends Group {
                 }
             });
             cabinet.position.y = -i * cabinet.config.depth;
+            lineLength += cabinet.config.depth;
+            lineDist = cabinet.config.width;
+            linePosZ = cabinet.config.height;
             this.add(cabinet);
         }
-        this.position.y = -2;
+        // this.position.y = -2;
+        // this.add(new Mesh(lineGeometry,lineMaterial))
+
+        const way = this.drawPathway(lineLength, lineDist/4);
+        way.position.set(0, 0, -linePosZ/2)
+        this.add(way);
+        
     }
 
     getCabinetIndex(cabinet) {
@@ -76,6 +88,21 @@ class CabinetGroup extends Group {
 
         this.config.openIndex = index;
     }
+
+    drawPathway(w, dist){
+        const {lineGeometry, lineMaterial} = this;
+        const group = new Group();
+        const mesh1 = new Mesh(lineGeometry, lineMaterial);
+        mesh1.scale.set(2,w+10,0);
+        const mesh2 = mesh1.clone();
+        mesh2.position.set(dist, 0, 0);
+        const mesh3 = mesh1.clone();
+        mesh3.position.set(-dist, 0, 0);
+        group.add(mesh1,mesh2,mesh3);
+
+        return group;
+    }
 }
+
 
 export default CabinetGroup;

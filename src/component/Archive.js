@@ -9,7 +9,7 @@ const material = new MeshBasicMaterial({color: 0xC8754A});
 class Archive extends Mesh{
     constructor(config){
         super();
-        this.config = config;
+        this.config = Object.assign(archiveConf, config);
         this.material = material;
         this.geometry = geometry;
 

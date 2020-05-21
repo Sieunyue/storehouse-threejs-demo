@@ -1,9 +1,14 @@
 import { MeshLambertMaterial, Mesh, Group, DoubleSide, Geometry, Vector3, Vector2, Face3, TextureLoader } from 'three';
-// import { ClickEvent } from '../clickEvent';
 import Archive from './Archive';
 import { cabinetItemConf } from '@/config';
 
-class CabinetItem extends Group {
+const shellMaterial = new MeshLambertMaterial({
+    side: DoubleSide,
+    color:  0xd3d3d3,
+    emissive: 0xd3d3d3
+});
+
+class CabinetItem extends Mesh {
     constructor(config) {
         super();
         const defaultConfig = {
@@ -13,14 +18,18 @@ class CabinetItem extends Group {
             doubleClick: () => {},
         };
         this.config = Object.assign(defaultConfig, config);
-        this.cabinetItem = undefined;
+        // this.cabinetItem = undefined;
+        this.geometry = generateGeometry(this.config.width, this.config.depth, this.config.height);
+        this.material = this.geometry.faces.map(()=>{
+            return shellMaterial;
+        })
         this.init();
     }
 
     async init() {
-        const { width: w, height: h, depth: d} = this.config;
-        this.cabinetItem = drawShell(w, d, h);
-        this.add(this.cabinetItem);
+        const { width: w, height: h, depth: d } = this.config;
+        // this.cabinetItem = drawShell(w, d, h);
+        // this.add(this.cabinetItem);
         // this.position.set(posX, 0, posY);
 
         // 设置案卷位置原点
@@ -30,31 +39,34 @@ class CabinetItem extends Group {
 
         this.addArchive();
     }
+
     addArchive() {
         const [x, y] = this.config.origin;
-        const archive = new Archive();
-
-        archive.position.set(x - 0.5, 0, y + 5);
-        this.add(archive);
+        const num = Math.round(Math.random() * 20);
+        for (let i = 0; i < num; i++) {
+            const archive = new Archive();
+            archive.position.set(x - i * archive.config.width - 0.5, 0, y + 5);
+            this.add(archive);
+        }
     }
 }
 
-function drawShell(w, h, d) {
-    const geometry = generateGeometry(w, h, d);
-    const texture = new TextureLoader().load('../../public/static/c1.png');
+// function drawShell(w, h, d) {
+//     const geometry = generateGeometry(w, h, d);
+//     const texture = new TextureLoader().load('../../public/static/c1.png');
 
-    const materials = [];
-    for (let i = 0; i < geometry.faces.length / 2; i++) {
-        materials.push(
-            new MeshLambertMaterial({
-                side: DoubleSide,
-                map: texture,
-            })
-        );
-    }
-    const mesh = new Mesh(geometry, materials);
-    return mesh;
-}
+//     const materials = [];
+//     for (let i = 0; i < geometry.faces.length / 2; i++) {
+//         materials.push(
+//             new MeshLambertMaterial({
+//                 side: DoubleSide,
+//                 map: texture,
+//             })
+//         );
+//     }
+//     const mesh = new Mesh(geometry, materials);
+//     return mesh;
+// }
 
 function generateGeometry(w, h, d) {
     const geometry = new Geometry();
