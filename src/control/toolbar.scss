@@ -1,0 +1,54 @@
+.toolbar-wrapper{
+    position: fixed;
+    top: 50%;
+    left: 0;
+    // width: 100px;
+    transform: translateY(-50%);
+}
+
+.toolbar-icon{
+    float: right;
+    background: rgba(0,0,0,.3);
+    color: #fff;
+    font-size: 22px;
+    text-align: center;
+    line-height: 1.5;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    vertical-align: top;
+
+}
+
+#side-check{
+    width: 0;
+}
+#side-check:checked + .has-check .toolbar-option{
+    width: 40px;
+}
+
+#side-check:checked + .has-check .toolbar-icon{
+    transform: rotate(180deg);
+    border-radius: 4px 0 0 4px;
+}
+
+.toolbar-option{
+    float: left;
+    width: 0;
+    height: 300px;
+    padding: 10px 0;
+    background: rgba(0,0,0,.3);
+    border-radius: 0 0 4px 0;
+    transition: width .1s;
+    overflow: hidden;
+    color: #fff;
+    text-align: center;
+
+    i{
+        font-size: 20px;
+        cursor: pointer;
+
+        &:hover{
+            text-shadow: 0 0 4px rgba($color: #fff, $alpha: .9);
+        }
+    }
+}

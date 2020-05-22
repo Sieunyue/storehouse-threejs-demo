@@ -1,6 +1,6 @@
 import { MeshLambertMaterial, Mesh, Group, DoubleSide, Geometry, Vector3, Vector2, Face3, TextureLoader, BoxGeometry, Color } from 'three';
 // import { scene, camera } from '../global';
-import { ClickEvent } from '../clickEvent';
+import { ClickEvent } from '../control/clickEvent';
 import CabinetItem from './CabinetItem';
 import { cabinetConf } from '@/config';
 
@@ -52,7 +52,6 @@ class Cabinet extends Mesh {
         this.geometry = generateGeometry(this.config.width, this.config.depth, this.config.height);
         this.material = this.renderMap();
         this.init();
-        console.log(this)
     }
 
     async init() {

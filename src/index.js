@@ -1,11 +1,13 @@
+import './index.scss';
+import '@/assets/iconfont/iconfont.css';
 import {AxesHelper} from 'three';
 import Stats from 'stats.js';
 import TWEEN from '@tweenjs/tween.js'
 import {scene, camera, renderer} from './global';
-import {initThreeClickEvent} from './clickEvent';
-// import Store from './component/Store';
+import {initThreeClickEvent} from '@/control/clickEvent';
+import '@/control/toolbar.js';
 import CabinetGroup from './component/CabinetGroup';
-import './index.scss';
+
 
 // document.body.appendChild( renderer.domElement );
 

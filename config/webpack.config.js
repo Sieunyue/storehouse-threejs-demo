@@ -25,7 +25,7 @@ module.exports = function (options) {
                     ],
                 },
                 {
-                    test: /\.(png|svg|jpg|gif)$/,
+                    test: /\.(png|jpg|gif)$/,
                     use: [
                         // ...
                         {
@@ -37,6 +37,15 @@ module.exports = function (options) {
                         },
                     ],
                 },
+                {
+                    test: /\.(eot|svg|ttf|woff|woff2)$/,
+                    use:{
+                        loader: 'file-loader',
+                        options: {
+                            outputPath: 'fonts/'
+                        }
+                    }
+                }
             ],
         },
         resolve: {

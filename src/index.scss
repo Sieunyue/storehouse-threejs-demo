@@ -1,7 +1,49 @@
-html, body{
+html,
+body {
     margin: 0;
     padding: 0;
     height: 100%;
     width: 100%;
     overflow: hidden;
+}
+
+// .dialog-hide{
+//     display: none;
+// }
+
+.btn {
+    padding: 4px 15px;
+    margin: 0 5px;
+    text-decoration: none;
+    background: 0 0;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 22px;
+    border: 1px solid rgb(217, 217, 217);
+    border-radius: 2px;
+    -webkit-transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+
+    &:hover {
+        color: #40a9ff;
+        background-color: #fff;
+        border-color: #40a9ff;
+    }
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1890ff;
+    border-color: #1890ff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+    -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+
+    &:hover {
+        color: #fff;
+        background-color: #40a9ff;
+        border-color: #40a9ff;
+    }
 }

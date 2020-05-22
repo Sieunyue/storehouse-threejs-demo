@@ -1,5 +1,5 @@
 import { Raycaster, Vector2 } from 'three';
-import { renderer, camera } from './global';
+import { renderer, camera } from '@/global';
 const clickObjects = [];
 const clickEventListen = {};
 const raycaster = new Raycaster();

@@ -1,5 +1,5 @@
 import {BoxGeometry, MeshBasicMaterial, Mesh} from 'three';
-import {ClickEvent} from '../clickEvent';
+import {ClickEvent} from '@/control/clickEvent';
 import {archiveConf} from '@/config';
 
 
@@ -20,6 +20,5 @@ class Archive extends Mesh{
         });
     }
 }
-
 
 export default Archive;
