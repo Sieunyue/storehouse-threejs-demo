@@ -1,13 +1,13 @@
 const cabinetGroupConf = {
     //密级柜组
-    number: 6,
+    number: 5,
 };
 const cabinetConf = {
     //密集柜
     width: 200,
-    height: 100,
-    depth: 30,
-    row: 6,
+    height: 80,
+    depth: 20,
+    row: 4,
     col: 6,
 };
 const cabinetItemConf = {
@@ -17,7 +17,7 @@ const cabinetItemConf = {
 };
 const archiveConf = {
     width: 1,
-    height: 25,
+    height: 20,
     depth: 10,
 };
 

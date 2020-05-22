@@ -7,12 +7,13 @@ const config = {
   devServer: {
     port: 8090,
     hot: true,
-    disableHostCheck: true
   },
   plugins: [
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
   ],
+  devtool: 'eval-source-map',
+  stats: 'minimal'
 };
 
 const options = {

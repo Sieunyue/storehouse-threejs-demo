@@ -1,5 +1,5 @@
 import { MeshLambertMaterial, Mesh, Group, DoubleSide, Geometry, Vector3, Vector2, Face3, TextureLoader, BoxGeometry, Color } from 'three';
-import { scene, camera } from '../global';
+// import { scene, camera } from '../global';
 import { ClickEvent } from '../clickEvent';
 import CabinetItem from './CabinetItem';
 import { cabinetConf } from '@/config';
@@ -11,10 +11,18 @@ const clapboardMaterial = new MeshLambertMaterial({
     emissive: 0xd3d3d3
 });
 
-const shellMaterial = new MeshLambertMaterial({
+const texture1 = new TextureLoader().load('../../public/static/c3.png');
+const texture2 = new TextureLoader().load('../../public/static/c4.png');
+
+const shellMaterial1 = new MeshLambertMaterial({
     side: DoubleSide,
-    color: 0xd3d3d3,
+    map: texture1
 });
+const shellMaterial2 = new MeshLambertMaterial({
+    side: DoubleSide,
+    map: texture2
+});
+
 
 class Cabinet extends Mesh {
     constructor(config) {
@@ -42,10 +50,9 @@ class Cabinet extends Mesh {
         };
         this.config = Object.assign(defaultConf, config);
         this.geometry = generateGeometry(this.config.width, this.config.depth, this.config.height);
-        this.material = this.geometry.faces.map(() => {
-            return shellMaterial;
-        });
+        this.material = this.renderMap();
         this.init();
+        console.log(this)
     }
 
     async init() {
@@ -74,10 +81,10 @@ class Cabinet extends Mesh {
     }
 
     addCabinet(row, col) {
-        const w = (this.config.width - (col - 1)) / col,
-            h = (this.config.height - (row - 1)) / row;
-        const startX = (this.config.width - w) / 2,
-            startY = (this.config.height - h) / 2;
+        const w = (this.config.width - (col - 1) - 0.02) / col,
+            h = (this.config.height - (row - 1) - 0.02) / row;
+        const startX = (this.config.width - w) / 2 - 0.01,
+            startY = (this.config.height - h) / 2 - 0.01;
 
         for (let i = 0; i < row; i++) {
             const posY = startY - i * (h + 1);
@@ -99,6 +106,18 @@ class Cabinet extends Mesh {
                 this.add(drawClapboard(this.config.width, 1, this.config.depth, 0, posY + h / 2 + 0.5));
             }
         }
+    }
+
+    renderMap(){
+        const ret = [];
+        for(let i = 0; i < this.geometry.faces.length/2; i++){
+            if(i === 6){
+                ret.push(shellMaterial1);
+            }else{
+                ret.push(shellMaterial2);
+            }
+        }
+        return ret;
     }
 }
 
@@ -172,23 +191,24 @@ function generateGeometry(w, h, d) {
         new Face3(7 + 8, 4 + 8, 3 + 8),
         new Face3(4 + 8, 0 + 8, 3 + 8),
 
-        new Face3(0, 8, 12),
-        new Face3(0, 4, 12),
-        new Face3(1, 9, 13),
-        new Face3(1, 5, 13),
-        new Face3(4, 5, 12),
-        new Face3(5, 12, 13),
-        new Face3(0, 8, 9),
-        new Face3(0, 1, 9),
+        new Face3(12, 4, 8),
+        new Face3(4, 0, 8),
+        new Face3(5, 13, 1),
+        new Face3(13, 9, 1),
+        new Face3(12, 13, 4),
+        new Face3(13, 5, 4),
+        new Face3(0, 1, 8),
+        new Face3(1, 9, 8),
 
-        new Face3(3, 11, 15),
-        new Face3(3, 7, 15),
-        new Face3(2, 10, 14),
-        new Face3(2, 6, 14),
-        new Face3(7, 6, 15),
-        new Face3(6, 15, 14),
+
+        new Face3(7, 15, 3),
+        new Face3(15, 11, 3),
+        new Face3(14, 6, 10),
+        new Face3(6, 2, 10),
+        new Face3(14, 15, 6),
+        new Face3(15, 7, 6),
+        new Face3(2, 3, 10),
         new Face3(3, 11, 10),
-        new Face3(3, 2, 10),
     ];
 
     geometry.vertices = v3;
@@ -200,6 +220,11 @@ function generateGeometry(w, h, d) {
     for (let i = 0; i < geometry.faces.length; i += 2) {
         geometry.faceVertexUvs[0][i] = [uv[0], uv[1], uv[3]];
         geometry.faceVertexUvs[0][i + 1] = [uv[1], uv[2], uv[3]];
+    }
+
+    for(let i = 0; i < geometry.faces.length/2; i++){
+        geometry.faces[i*2].materialIndex = i;
+        geometry.faces[i*2+1].materialIndex = i;
     }
 
     return geometry;

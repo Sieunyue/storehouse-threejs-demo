@@ -34,7 +34,7 @@ class CabinetItem extends Mesh {
 
         // 设置案卷位置原点
         const { origin } = this.config;
-        origin[0] = w / 2;
+        origin[0] = w / 2 - 0.51;
         origin[1] = -h / 2;
 
         this.addArchive();
@@ -45,7 +45,7 @@ class CabinetItem extends Mesh {
         const num = Math.round(Math.random() * 20);
         for (let i = 0; i < num; i++) {
             const archive = new Archive();
-            archive.position.set(x - i * archive.config.width - 0.5, 0, y + 5);
+            archive.position.set(x - i * archive.config.width , 0, y + 5);
             this.add(archive);
         }
     }

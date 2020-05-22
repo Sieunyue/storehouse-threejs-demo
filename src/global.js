@@ -6,6 +6,7 @@ const scene = new Scene();
 const camera = new PerspectiveCamera(1000, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new WebGLRenderer({
     canvas: document.querySelector('#demo'),
+    logarithmicDepthBuffer:true
 });
 
 renderer.setClearColor(0xf0f0f0, 1.0);
