@@ -12,7 +12,7 @@ const clapboardMaterial = new MeshLambertMaterial({
 
 const shellMaterial = new MeshLambertMaterial({
     side: DoubleSide,
-    color: 0x9DB4D2,
+    color: 0xc0c0c0,
 });
 
 class Cabinet extends Mesh {

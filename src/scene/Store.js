@@ -51,7 +51,7 @@ const materials = [];
 for (let i = 0; i < 12; i++) {
     let color = i === 4 ? '#FDFDFD' : '#5E8EBE';
     materials.push(
-        new MeshBasicMaterial({
+        new MeshLambertMaterial({
             side: DoubleSide,
             color: color,
         })
