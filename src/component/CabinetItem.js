@@ -43,7 +43,7 @@ class CabinetItem extends Mesh {
         const num = Math.round(Math.random() * 20);
         for (let i = 0; i < num; i++) {
             const archive = new Archive();
-            archive.position.set(x - (i * (archive.config.width+.1)+1), 0, y + 5);
+            archive.position.set(x - (i * (archive.config.width+.1)+.5), 0, y + 4);
             this.add(archive);
         }
     }

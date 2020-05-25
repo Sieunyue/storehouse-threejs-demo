@@ -21,7 +21,7 @@ function generateCabinetItem(col, row) {
 const cabinet = generateCabinet(5);
 const data = {
     name: 'demo',
-    number: 3,
+    number: 5,
     children: [
         { name: 'A1', children: generateCabinetItem(6, 4) },
         { name: 'A2', children: generateCabinetItem(6, 4) },

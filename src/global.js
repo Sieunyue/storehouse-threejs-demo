@@ -10,7 +10,7 @@ const renderer = new WebGLRenderer({
     antialias: true
 });
 
-renderer.setClearColor(0xf0f0f0, 1.0);
+renderer.setClearColor(0x01031C, 1.0);
 renderer.shadowMap.enabled = true;
 renderer.setSize(window.innerWidth, window.innerHeight);
 
@@ -23,10 +23,10 @@ const control = new OrbitControls(camera, renderer.domElement);
 
 const light1 = new DirectionalLight(0xffffff);
 // const light2 = new DirectionalLight(0xffffff);
-const light2 = new AmbientLight(0xffffff);
+// const light2 = new AmbientLight(0xffff00);
 //设置灯光的位置
 // light1.position.set(0, -500, 0);
-light1.position.set(500, -500, 500);
+light1.position.set(0, -500, 0);
 //将灯光加入场景
 scene.add(light1);
 // scene.add(light2);

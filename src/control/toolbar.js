@@ -22,15 +22,12 @@ document.querySelector('.search-archive').onclick = () => {
                 // obj.material.color=0x000000;
 
                 let count = 0;
+                let sColor = obj.material.color.clone();
                 let timerId = setInterval(()=>{
                     if(count%2===0){
-                        obj.material.forEach((o)=>{
-                            o.color.set(0xff0000)
-                        })
+                        obj.material.color.set(0xff0000)
                     }else{
-                        obj.material.forEach((o)=>{
-                            o.color.set(0xffffff)
-                        })
+                        obj.material.color.set(sColor)
                     }
                     count++;
                     if(count === 6){
