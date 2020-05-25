@@ -1,11 +1,11 @@
-import { MeshLambertMaterial, Mesh, Group, DoubleSide, Geometry, Vector3, Vector2, Face3, TextureLoader, BoxGeometry, Color } from 'three';
-// import { scene, camera } from '../global';
+import { MeshBasicMaterial, Mesh, Group, DoubleSide, Geometry, Vector3, Vector2, Face3, TextureLoader, BoxGeometry, Color } from 'three';
+import { scene, camera } from '../global';
 import { ClickEvent } from '../control/clickEvent';
 import CabinetItem from './CabinetItem';
 import { cabinetConf } from '@/config';
 
 const clapboardGeometry = new BoxGeometry(1, 1, 1);
-const clapboardMaterial = new MeshLambertMaterial({
+const clapboardMaterial = new MeshBasicMaterial({
     side: DoubleSide,
     color:  0xd3d3d3,
     emissive: 0xd3d3d3
@@ -14,11 +14,11 @@ const clapboardMaterial = new MeshLambertMaterial({
 const texture1 = new TextureLoader().load('../../public/static/c3.png');
 const texture2 = new TextureLoader().load('../../public/static/c4.png');
 
-const shellMaterial1 = new MeshLambertMaterial({
+const shellMaterial1 = new MeshBasicMaterial({
     side: DoubleSide,
     map: texture1
 });
-const shellMaterial2 = new MeshLambertMaterial({
+const shellMaterial2 = new MeshBasicMaterial({
     side: DoubleSide,
     map: texture2
 });
@@ -34,21 +34,22 @@ class Cabinet extends Mesh {
             row: cabinetConf.row,
             col: cabinetConf.col,
             doubleClick: (cabinet) => {
-                // const cabinetDetail = cabinet.clone(cabinet, true);
+                // const cabinetDetail = this.gemoclone(true);
                 // cabinetDetail.position.copy(camera.position);
                 // cabinetDetail.rotation.copy(camera.rotation);
                 // cabinetDetail.updateMatrix();
-                // cabinetDetail.translateZ(-40);
+                // cabinetDetail.translateZ(-140);
                 // cabinetDetail.rotateX(Math.PI / 2);
-                // cabinetDetail.setDoubleClickFunc((o) => {
-                //     ClickEvent.off(o.cabinet);
-                //     scene.remove(o);
-                // });
+                // // cabinetDetail.setDoubleClickFunc((o) => {
+                // //     ClickEvent.off(o.cabinet);
+                // //     scene.remove(o);
+                // // });
                 // scene.add(cabinetDetail);
             },
             click: () => {},
         };
         this.config = Object.assign(defaultConf, config);
+        this.name = config.name || '';
         this.geometry = generateGeometry(this.config.width, this.config.depth, this.config.height);
         this.material = this.renderMap();
         this.init();
@@ -87,22 +88,26 @@ class Cabinet extends Mesh {
 
         for (let i = 0; i < row; i++) {
             const posY = startY - i * (h + 1);
-
             for (let j = 0; j < col; j++) {
                 const posX = startX - j * (w + 1);
                 const item = new CabinetItem({
-                    width: w,
-                    height: h,
+                    ...this.config.children[i*col+j],
+                    width: w-.024,
+                    height: h-.024,
                     depth: this.config.depth,
                 });
-                item.position.set(posX, 0, posY);
+                item.position.set(posX-.01, 0, posY-.01);
+                item.updateMatrix();
                 this.add(item);
                 if (i === 0 && j !== 0) {
-                    this.add(drawClapboard(1, this.config.height, this.config.depth, posX + w / 2 + 0.5, 0));
+                    const board = drawClapboard(1, this.config.height, this.config.depth, posX + w / 2 + 0.5, 0)
+                    this.geometry.merge(board.geometry, board.matrix);
                 }
             }
             if (i !== 0) {
-                this.add(drawClapboard(this.config.width, 1, this.config.depth, 0, posY + h / 2 + 0.5));
+                const board = drawClapboard(this.config.width, 1, this.config.depth, 0, posY + h / 2 + 0.5);
+                this.geometry.merge(board.geometry, board.matrix);
+                
             }
         }
     }
@@ -111,9 +116,9 @@ class Cabinet extends Mesh {
         const ret = [];
         for(let i = 0; i < this.geometry.faces.length/2; i++){
             if(i === 6){
-                ret.push(shellMaterial1);
+                ret.push(shellMaterial1.clone());
             }else{
-                ret.push(shellMaterial2);
+                ret.push(shellMaterial2.clone());
             }
         }
         return ret;
@@ -124,6 +129,8 @@ function drawClapboard(w, h, d, posX, posY) {
     const mesh = new Mesh(clapboardGeometry, clapboardMaterial);
     mesh.scale.set(w, d, h);
     mesh.position.set(posX, 0, posY);
+    mesh.name = 'clapboard';
+    mesh.updateMatrix();
     return mesh;
 }
 
@@ -134,7 +141,7 @@ function drawClapboard(w, h, d, posX, posY) {
 //     const materials = [];
 //     for (let i = 0; i < geometry.faces.length / 2; i++) {
 //         materials.push(
-//             new MeshLambertMaterial({
+//             new MeshBasicMaterial({
 //                 side: DoubleSide,
 //                 // map: texture,
 //                 color: 0x00ffff,

@@ -7,11 +7,11 @@ import {scene, camera, renderer} from './global';
 import {initThreeClickEvent} from '@/control/clickEvent';
 import '@/control/toolbar.js';
 import CabinetGroup from './component/CabinetGroup';
-
+import {data} from '@/mock/archive-data';
 
 // document.body.appendChild( renderer.domElement );
 
-const cabinetGroup = new CabinetGroup();
+const cabinetGroup = new CabinetGroup(data);
 cabinetGroup.rotateX(Math.PI/2)
 
 scene.add(cabinetGroup);

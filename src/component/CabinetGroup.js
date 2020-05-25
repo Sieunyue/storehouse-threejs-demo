@@ -9,7 +9,9 @@ class CabinetGroup extends Group {
         const defaultConfig = {
             openIndex: 0,
             number: cabinetGroupConf.number,
+            children: []
         };
+        this.name = config.name;
         this.config = Object.assign(defaultConfig, config);
         this.lineMaterial = new MeshBasicMaterial( { color: 0x00 } );
         this.lineGeometry = new PlaneGeometry(1,1);
@@ -22,6 +24,7 @@ class CabinetGroup extends Group {
 
         for (let i = 0; i < number; i++) {
             const cabinet = new Cabinet({
+                ...this.config.children[i],
                 click: (cabinet)=>{
                     this.openCabinet(cabinet);
                 }
@@ -32,8 +35,6 @@ class CabinetGroup extends Group {
             linePosZ = cabinet.config.height;
             this.add(cabinet);
         }
-        // this.position.y = -2;
-        // this.add(new Mesh(lineGeometry,lineMaterial))
 
         const way = this.drawPathway(lineLength, lineDist/4);
         way.position.set(0, 0, -linePosZ/2)
@@ -65,7 +66,7 @@ class CabinetGroup extends Group {
             for (let s = index, e = openIndex; e < s; e++) {
                 let spos = { y: cabinets[e].position.y };
                 let tween1 = new TWEEN.Tween(spos)
-                    .to({ y:  cabinets[e].position.y + cabinet.config.depth }, 300)
+                    .to({ y:  cabinets[e].position.y + cabinet.config.depth+10 }, 300)
                     .easing(TWEEN.Easing.Quadratic.Out)
                     .onUpdate(() => {
                         cabinets[e].position.y = spos.y;
@@ -77,7 +78,7 @@ class CabinetGroup extends Group {
             for (let s = openIndex, e = index; e < s; e++) {
                 let spos = { y: cabinets[e].position.y };
                 let tween1 = new TWEEN.Tween(spos)
-                    .to({ y:  cabinets[e].position.y - cabinet.config.depth }, 300)
+                    .to({ y:  cabinets[e].position.y - cabinet.config.depth -10 }, 300)
                     .easing(TWEEN.Easing.Quadratic.Out)
                     .onUpdate(() => {
                         cabinets[e].position.y = spos.y;

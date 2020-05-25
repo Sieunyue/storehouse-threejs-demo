@@ -22,12 +22,15 @@ camera.lookAt(0, 0, 0);
 const control = new OrbitControls(camera, renderer.domElement);
 
 const light1 = new DirectionalLight(0xffffff);
-const light2 = new AmbientLight(0x000000);
+// const light2 = new DirectionalLight(0xffffff);
+const light2 = new AmbientLight(0xffffff);
 //设置灯光的位置
-light1.position.set(0, -200, 0);
+// light1.position.set(0, -500, 0);
+light1.position.set(500, -500, 500);
 //将灯光加入场景
 scene.add(light1);
-scene.add(light2);
+// scene.add(light2);
+// scene.add(light2);
 
 // const g = new BoxGeometry(20, 20, 20);
 // const m = new MeshStandardMaterial({
@@ -41,4 +44,4 @@ scene.add(light2);
 // });
 // scene.add(new Mesh(g, m));
 
-export { scene, camera, renderer };
+export { scene, camera, renderer, control };
