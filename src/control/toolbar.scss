@@ -8,7 +8,7 @@
 
 .toolbar-icon{
     float: right;
-    background: rgba(0,0,0,.3);
+    background: rgba($color: #fff, $alpha: .2);
     color: #fff;
     font-size: 22px;
     text-align: center;
@@ -36,7 +36,7 @@
     width: 0;
     height: 300px;
     padding: 10px 0;
-    background: rgba(0,0,0,.3);
+    background: rgba($color: #fff, $alpha: .2);
     border-radius: 0 0 4px 0;
     transition: width .1s;
     overflow: hidden;
@@ -46,7 +46,7 @@
     i{
         font-size: 20px;
         cursor: pointer;
-
+        line-height: 26px;
         &:hover{
             text-shadow: 0 0 4px rgba($color: #fff, $alpha: .9);
         }

@@ -1,23 +1,31 @@
 import {BoxGeometry, MeshLambertMaterial, Mesh} from 'three';
-import {ClickEvent} from '@/control/clickEvent';
 import {archiveConf} from '@/config';
 
 
 const geometry = new BoxGeometry(archiveConf.width, archiveConf.height, archiveConf.depth);
-const material = new MeshLambertMaterial({color: 0xC8754A, emissive: 0xC8754A});
+const material = new MeshLambertMaterial({color: 0xC8754A});
 
 class Archive extends Mesh{
     constructor(config){
         super();
         this.config = Object.assign(archiveConf, config);
-        this.material = material;
-        this.geometry = geometry;
+        this.material = material.clone();
+        this.geometry = geometry.clone();
+        this.init();
+    }
 
-        ClickEvent.on('doubleClick', this, (obj) => {
-            if (this.uuid === obj.uuid) {
-                alert('点击案卷');
+    init(){
+        const {isGroup, num, width} = this.config;
+        if(isGroup){
+            for(let i = 0; i < num; i++){
+                const _geo = geometry.clone();
+                const _mat = material.clone();
+                const _mesh = new Mesh(_geo, _mat);
+                _mesh.position.x = (-i * (width+.1)+.5);
+                _mesh.updateMatrix();
+                this.geometry.merge(_mesh.geometry, _mesh.matrix);
             }
-        });
+        }
     }
 }
 

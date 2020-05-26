@@ -1,17 +1,18 @@
-import { MeshLambertMaterial, Mesh, DoubleSide, Geometry, Vector3, Vector2, Face3, TextureLoader, BoxGeometry} from 'three';
-// import { scene, camera } from '../global';
+import { MeshLambertMaterial, Mesh, DoubleSide, Geometry, Vector3, Vector2, Font, FontLoader, Face3, TextGeometry, BoxGeometry } from 'three';
 import { ClickEvent } from '../control/clickEvent';
-import CabinetItem from './CabinetItem';
 import { cabinetConf } from '@/config';
+import CabinetItem from './CabinetItem';
+// import { scene, camera } from '../global';
 
 const clapboardGeometry = new BoxGeometry(1, 1, 1);
 const clapboardMaterial = new MeshLambertMaterial({
     side: DoubleSide,
-    color: 0xC0C0C0,
+    color: 0xc0c0c0,
 });
 
 const shellMaterial = new MeshLambertMaterial({
     side: DoubleSide,
+    // wireframe: true,
     color: 0xc0c0c0,
 });
 
@@ -24,8 +25,7 @@ class Cabinet extends Mesh {
             depth: cabinetConf.depth,
             row: cabinetConf.row,
             col: cabinetConf.col,
-            doubleClick: (cabinet) => {
-            },
+            doubleClick: (cabinet) => {},
             click: () => {},
         };
         this.config = Object.assign(defaultConf, config);
@@ -35,8 +35,24 @@ class Cabinet extends Mesh {
         this.init();
     }
 
-    async init() {
+    init() {
         const { width: w, height: h, depth: d, col, row } = this.config;
+        const load = new FontLoader();
+        const that = this;
+        load.load('../../public/static/helvetiker_regular.typeface.json',function(font){
+            const textGeo = new TextGeometry(that.name, {
+                font: font,
+                size: 6,
+                height: 2,
+            });
+            const textmaterial = new MeshLambertMaterial({ side: DoubleSide, color: 0x0f4b69 });
+            const textMesh = new Mesh(textGeo, textmaterial);
+            textMesh.rotateZ(Math.PI/2)
+            textMesh.rotateX(Math.PI/2)
+            textMesh.position.set(w/2,-6,0);
+            that.add(textMesh);
+        });
+       
 
         ClickEvent.on('click', this, (obj) => {
             if (this.uuid === obj.uuid) {
@@ -77,15 +93,16 @@ class Cabinet extends Mesh {
                     depth: this.config.depth,
                 });
                 item.position.set(posX - 0.01, 0, posY - 0.01);
-                item.updateMatrix();
+                // item.updateMatrix();
+                // this.geometry.merge(item.geometry, item.matrix);
                 this.add(item);
                 if (i === 0 && j !== 0) {
-                    const board = drawClapboard(1, this.config.height, this.config.depth, posX + w / 2 + 0.5, 0);
+                    const board = drawClapboard(1, this.config.height-.2, this.config.depth, posX + w / 2 + 0.5, 0);
                     this.geometry.merge(board.geometry, board.matrix);
                 }
             }
             if (i !== 0) {
-                const board = drawClapboard(this.config.width, 1, this.config.depth, 0, posY + h / 2 + 0.5);
+                const board = drawClapboard(this.config.width-.2, 1, this.config.depth, 0, posY + h / 2 + 0.5);
                 this.geometry.merge(board.geometry, board.matrix);
             }
         }
@@ -100,27 +117,6 @@ function drawClapboard(w, h, d, posX, posY) {
     mesh.updateMatrix();
     return mesh;
 }
-
-// function drawShell(w, h, d) {
-//     const geometry = generateGeometry(w, h, d);
-//     // const texture = new TextureLoader().load('../../public/static/c1.png');
-
-//     const materials = [];
-//     for (let i = 0; i < geometry.faces.length / 2; i++) {
-//         materials.push(
-//             new MeshLambertMaterial({
-//                 side: DoubleSide,
-//                 // map: texture,
-//                 color: 0x00ffff,
-//                 // shininess: 12,
-//                 // emissive: 0x696969,
-//             })
-//         );
-//     }
-//     const mesh = new Mesh(geometry, materials);
-//     console.log(mesh);
-//     return mesh;
-// }
 
 function generateGeometry(w, h, d) {
     const geometry = new Geometry();
@@ -181,6 +177,11 @@ function generateGeometry(w, h, d) {
         new Face3(15, 7, 6),
         new Face3(2, 3, 10),
         new Face3(3, 11, 10),
+
+        // new Face3(14, 15,10),
+        // new Face3(15, 11, 10),
+        // new Face3(12, 13, 8),
+        // new Face3(13, 9, 8)
     ];
 
     geometry.vertices = v3;

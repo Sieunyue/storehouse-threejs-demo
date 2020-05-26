@@ -23,7 +23,7 @@ const control = new OrbitControls(camera, renderer.domElement);
 
 const light1 = new PointLight(0xffffff);
 // const light2 = new DirectionalLight(0xffffff);
-const light2 = new AmbientLight(0xffffff, .3);
+const light2 = new AmbientLight(0xffffff, .5);
 //设置灯光的位置
 // light1.position.set(0, -500, 0);
 light1.position.set(0, -500, 0);

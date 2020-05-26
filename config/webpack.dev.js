@@ -12,7 +12,7 @@ const config = {
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
   ],
-  devtool: 'eval-source-map',
+  devtool: 'source-map',
   stats: 'minimal'
 };
 

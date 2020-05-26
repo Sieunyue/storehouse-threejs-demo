@@ -111,6 +111,7 @@ function isOnEventList(event, mesh) {
     return false;
 }
 
+
 // function addClickEvent(mesh){
 //     clickObjects.push(mesh);
 // }

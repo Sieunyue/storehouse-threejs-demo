@@ -1,11 +1,10 @@
-import { MeshBasicMaterial, Mesh, Group, DoubleSide, Geometry, Vector3, Vector2, Face3, TextureLoader } from 'three';
+import { MeshBasicMaterial, Mesh, Group, DoubleSide, Geometry, Vector3, Vector2, Face3, TextureLoader, BoxGeometry } from 'three';
 import Archive from './Archive';
 import { cabinetItemConf } from '@/config';
 
 const shellMaterial = new MeshBasicMaterial({
-    side: DoubleSide,
-    color: 0xd3d3d3,
-    emissive: 0xd3d3d3,
+    transparent: true,
+    opacity: 0
 });
 
 class CabinetItem extends Mesh {
@@ -34,18 +33,15 @@ class CabinetItem extends Mesh {
         const { origin } = this.config;
         origin[0] = w / 2 - 0.51;
         origin[1] = -h / 2;
-
         this.addArchive();
     }
 
     addArchive() {
         const [x, y] = this.config.origin;
-        const num = Math.round(Math.random() * 20);
-        for (let i = 0; i < num; i++) {
-            const archive = new Archive();
-            archive.position.set(x - (i * (archive.config.width+.1)+.5), 0, y + 4);
-            this.add(archive);
-        }
+        const num = Math.round(Math.random() * 10);
+        const archiveGroup = new Archive({isGroup: true, num: num});
+        archiveGroup.position.set(x, 0, y+4);
+        this.add(archiveGroup)
     }
 }
 

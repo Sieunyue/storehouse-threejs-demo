@@ -13,13 +13,11 @@ class Store extends Group {
     constructor(config) {
         super();
         this.width = 300;
-        this.height = 400;
+        this.height = 250;
         this.depth = 40;
         Object.assign(this, config);
         this.init();
         this.rotateX(Math.PI / 2);
-        // this.store = new Group();
-        // this.init(scene, Object.assign(defaultConfig, config));
     }
     init() {
         const { width: w, height: h, depth:d } = this;
@@ -29,17 +27,6 @@ class Store extends Group {
         this.add(drawWalls(1, h, d, -(w / 2), 0, d / 2));
         this.add(drawWalls(1, h, d, w / 2, 0, d / 2));
     }
-    // async init(scene, config) {
-    //     const {width,h,depth,rotate} = config;
-
-    //     this.store.add(await drawFloor(width, h));
-
-    //     this.store.rotateX((Math.PI/2));
-    //     this.store.position.set(0,0, 0);
-    //     // this.store.position.set(0,0,width/2)
-    //     scene.add(this.store);
-
-    // }
 }
 
 function drawFloor(w, h) {

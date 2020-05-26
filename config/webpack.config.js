@@ -9,10 +9,21 @@ module.exports = function (options) {
         entry: './src/index.js',
         output: {
             filename: 'index.js',
-            path: path.resolve(__dirname, 'dist'),
+            path: path.resolve(__dirname, '../dist'),
         },
         module: {
             rules: [
+                {
+                    test: /\.js$/,
+                    include: path.resolve(__dirname, '../src'),
+                    use: {
+                        loader: 'babel-loader',
+                        options: {
+                            babelrc: false,
+                            extends: path.resolve(__dirname, "./babelrc.json")
+                        }
+                    }
+                },
                 {
                     test: /\.(sa|sc|c)ss$/,
                     use: [

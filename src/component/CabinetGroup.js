@@ -29,15 +29,15 @@ class CabinetGroup extends Group {
                     this.openCabinet(cabinet);
                 }
             });
-            cabinet.position.y = -i * cabinet.config.depth;
+            cabinet.position.y = i * cabinet.config.depth;
             lineLength += cabinet.config.depth;
             lineDist = cabinet.config.width;
             linePosZ = cabinet.config.height;
             this.add(cabinet);
         }
-
+        this.config.openIndex = number-1;
         const way = this.drawPathway(lineLength, lineDist/4);
-        way.position.set(0, 0, -linePosZ/2)
+        way.position.set(0, 15, -linePosZ/2-.2)
         this.add(way);
         
     }
@@ -63,10 +63,10 @@ class CabinetGroup extends Group {
 
         const cabinets = this.children;
         if (index > openIndex) {
-            for (let s = index, e = openIndex; e < s; e++) {
+            for (let s = index, e = openIndex+1; e <= s; e++) {
                 let spos = { y: cabinets[e].position.y };
                 let tween1 = new TWEEN.Tween(spos)
-                    .to({ y:  cabinets[e].position.y + cabinet.config.depth+10 }, 300)
+                    .to({ y:  cabinets[e].position.y - cabinet.config.depth-10 }, 300)
                     .easing(TWEEN.Easing.Quadratic.Out)
                     .onUpdate(() => {
                         cabinets[e].position.y = spos.y;
@@ -75,10 +75,10 @@ class CabinetGroup extends Group {
             }
             
         }else{
-            for (let s = openIndex, e = index; e < s; e++) {
+            for (let s = openIndex, e = index+1; e <= s; e++) {
                 let spos = { y: cabinets[e].position.y };
                 let tween1 = new TWEEN.Tween(spos)
-                    .to({ y:  cabinets[e].position.y - cabinet.config.depth -10 }, 300)
+                    .to({ y:  cabinets[e].position.y + cabinet.config.depth +10 }, 300)
                     .easing(TWEEN.Easing.Quadratic.Out)
                     .onUpdate(() => {
                         cabinets[e].position.y = spos.y;
@@ -94,7 +94,7 @@ class CabinetGroup extends Group {
         const {lineGeometry, lineMaterial} = this;
         const group = new Group();
         const mesh1 = new Mesh(lineGeometry, lineMaterial);
-        mesh1.scale.set(2,w+10,0);
+        mesh1.scale.set(2,w+20,0);
         const mesh2 = mesh1.clone();
         mesh2.position.set(dist, 0, 0);
         const mesh3 = mesh1.clone();

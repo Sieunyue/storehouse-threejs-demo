@@ -4,9 +4,9 @@ const cabinetGroupConf = {
 };
 const cabinetConf = {
     //密集柜
-    width: 100,
+    width: 80,
     height: 40,
-    depth: 10,
+    depth: 20,
     row: 4,
     col: 6,
 };
@@ -17,7 +17,7 @@ const cabinetItemConf = {
 };
 const archiveConf = {
     width: .5,
-    height: 8,
+    height: 16,
     depth: 8,
 };
 
