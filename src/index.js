@@ -20,15 +20,15 @@ cabinetGroup.rotateX(Math.PI / 2);
 cabinetGroup.rotateZ(Math.PI / 2);
 cabinetGroup1.rotateX(Math.PI / 2);
 cabinetGroup1.rotateZ(Math.PI / 2);
-cabinetGroup.position.set(140, -25, 60);
-cabinetGroup1.position.set(140, -25, -60);
+cabinetGroup.position.set(140, -22, 60);
+cabinetGroup1.position.set(140, -22, -60);
 
 cabinetGroup2.rotateX(Math.PI / 2);
 cabinetGroup2.rotateZ(-Math.PI / 2);
 cabinetGroup3.rotateX(Math.PI / 2);
 cabinetGroup3.rotateZ(-Math.PI / 2);
-cabinetGroup2.position.set(-140, -25, 60);
-cabinetGroup3.position.set(-140, -25, -60);
+cabinetGroup2.position.set(-140, -22, 60);
+cabinetGroup3.position.set(-140, -22, -60);
 
 scene.add(cabinetGroup);
 scene.add(cabinetGroup1);

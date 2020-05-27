@@ -14,7 +14,7 @@ class Store extends Group {
         super();
         this.width = 300;
         this.height = 250;
-        this.depth = 40;
+        this.depth = 50;
         Object.assign(this, config);
         this.init();
         this.rotateX(Math.PI / 2);

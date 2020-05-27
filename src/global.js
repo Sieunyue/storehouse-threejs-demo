@@ -2,12 +2,11 @@ import { Scene, PerspectiveCamera, WebGLRenderer, PointLight, AmbientLight } fro
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 // three 三个基本元素，场景、相机和渲染器
-const scene = new Scene();
+
 const camera = new PerspectiveCamera(1000, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new WebGLRenderer({
     canvas: document.querySelector('#demo'),
-    logarithmicDepthBuffer:true,
-    antialias: true
+    // logarithmicDepthBuffer:true,
 });
 
 renderer.setClearColor(0x01031C, 1.0);
@@ -21,6 +20,7 @@ camera.lookAt(0, 0, 0);
 // eslint-disable-next-line
 const control = new OrbitControls(camera, renderer.domElement);
 
+const scene = new Scene();
 const light1 = new PointLight(0xffffff);
 // const light2 = new DirectionalLight(0xffffff);
 const light2 = new AmbientLight(0xffffff, .5);

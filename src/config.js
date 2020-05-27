@@ -1,6 +1,7 @@
 const cabinetGroupConf = {
     //密级柜组
     number: 1,
+    lazy: true,
 };
 const cabinetConf = {
     //密集柜

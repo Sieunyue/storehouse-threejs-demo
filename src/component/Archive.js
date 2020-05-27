@@ -9,7 +9,7 @@ class Archive extends Mesh{
     constructor(config){
         super();
         this.config = Object.assign(archiveConf, config);
-        this.material = material.clone();
+        this.material = material;
         this.geometry = geometry.clone();
         this.init();
     }
@@ -26,6 +26,17 @@ class Archive extends Mesh{
                 this.geometry.merge(_mesh.geometry, _mesh.matrix);
             }
         }
+    }
+
+    hide(){
+        this.material.transparent = true;
+        this.opacity.opacity = 0;
+    }
+
+    show(){
+        this.material.transparent = false;
+        this.opacity.opacity = 1;
+
     }
 }
 

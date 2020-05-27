@@ -7,16 +7,16 @@
 }
 
 .toolbar-icon{
-    float: right;
+    // float: right;
+    display: block;
     background: rgba($color: #fff, $alpha: .2);
     color: #fff;
     font-size: 22px;
     text-align: center;
     line-height: 1.5;
-    border-radius: 0 4px 4px 0;
+    border-top: 1px solid rgba($color: #fff, $alpha: .7);
+    border-radius: 0 4px 0 0;
     cursor: pointer;
-    vertical-align: top;
-
 }
 
 #side-check{
@@ -28,11 +28,11 @@
 
 #side-check:checked + .has-check .toolbar-icon{
     transform: rotate(180deg);
-    border-radius: 4px 0 0 4px;
+    border-radius: 0 0 0 4px;
 }
 
 .toolbar-option{
-    float: left;
+    // float: left;
     width: 0;
     height: 300px;
     padding: 10px 0;

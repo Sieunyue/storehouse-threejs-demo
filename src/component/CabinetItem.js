@@ -1,11 +1,14 @@
-import { MeshBasicMaterial, Mesh, Group, DoubleSide, Geometry, Vector3, Vector2, Face3, TextureLoader, BoxGeometry } from 'three';
+import { MeshBasicMaterial, Mesh,  Geometry, Vector3, Vector2, Face3} from 'three';
 import Archive from './Archive';
 import { cabinetItemConf } from '@/config';
 
 const shellMaterial = new MeshBasicMaterial({
+    color: 0xff0000,
     transparent: true,
-    opacity: 0
+    opacity: 0,
 });
+
+let shellGeometry = generateGeometry(1, 1, 1);
 
 class CabinetItem extends Mesh {
     constructor(config) {
@@ -13,18 +16,20 @@ class CabinetItem extends Mesh {
         const defaultConfig = {
             ...cabinetItemConf,
             origin: [0, 0],
+            lazy: true,
             click: () => {},
             doubleClick: () => {},
         };
         this.config = Object.assign(defaultConfig, config);
         this.name = config.name || '';
-        this.geometry = generateGeometry(this.config.width, this.config.depth, this.config.height);
+        this.geometry = shellGeometry;
         this.material = shellMaterial.clone();
         this.init();
+        this.isCabinetItem = true;
     }
 
     async init() {
-        const { width: w, height: h, depth: d } = this.config;
+        const { width: w, height: h, depth: d, lazy } = this.config;
         // this.cabinetItem = drawShell(w, d, h);
         // this.add(this.cabinetItem);
         // this.position.set(posX, 0, posY);
@@ -33,19 +38,59 @@ class CabinetItem extends Mesh {
         const { origin } = this.config;
         origin[0] = w / 2 - 0.51;
         origin[1] = -h / 2;
-        this.addArchive();
+
+        if(!lazy){
+            this.addArchive();
+        }
     }
 
     addArchive() {
+        if(this.children.length !== 0){
+            return;
+        }
+
         const [x, y] = this.config.origin;
         const num = Math.round(Math.random() * 10);
         const archiveGroup = new Archive({isGroup: true, num: num});
-        archiveGroup.position.set(x, 0, y+4);
+        archiveGroup.position.set(x-1, 0, y+4);
         this.add(archiveGroup)
+    }
+
+    removeArchive(){
+        this.children.forEach((archive)=>{
+            archive.geometry.dispose();
+            this.remove(archive);
+        })
+    }
+
+    hide(){
+        this.material.transparent = true;
+        this.material.opacity = 0;
+        this.children.forEach((item)=>{
+            item.hide();
+        })
+    }
+
+    show(){
+        this.material.transparent = false;
+        this.material.opacity = 1;
+        this.children.forEach((item)=>{
+            if(item.isCabinetItem){
+                item.show();
+            }
+        })
+    }
+
+    static resetGeometry(w,h,d){
+        if(shellGeometry.isGeometry){
+            shellGeometry.dispose();
+        }
+        shellGeometry = new generateGeometry(w, d, h)
     }
 }
 
 function generateGeometry(w, h, d) {
+
     const geometry = new Geometry();
     const v3 = [
         new Vector3(-w / 2, -h / 2, d / 2), //0
@@ -92,4 +137,5 @@ function generateGeometry(w, h, d) {
 
     return geometry;
 }
+
 export default CabinetItem;

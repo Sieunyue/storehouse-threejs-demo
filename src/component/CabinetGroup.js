@@ -9,6 +9,7 @@ class CabinetGroup extends Group {
         const defaultConfig = {
             openIndex: 0,
             number: cabinetGroupConf.number,
+            lazy: true,
             children: []
         };
         this.name = config.name;
@@ -25,6 +26,7 @@ class CabinetGroup extends Group {
         for (let i = 0; i < number; i++) {
             const cabinet = new Cabinet({
                 ...this.config.children[i],
+                lazy: i === (number-1)?false: this.config.lazy,
                 click: (cabinet)=>{
                     this.openCabinet(cabinet);
                 }
@@ -34,10 +36,12 @@ class CabinetGroup extends Group {
             lineDist = cabinet.config.width;
             linePosZ = cabinet.config.height;
             this.add(cabinet);
+            
         }
         this.config.openIndex = number-1;
         const way = this.drawPathway(lineLength, lineDist/4);
-        way.position.set(0, 15, -linePosZ/2-.2)
+        console.log(lineLength)
+        way.position.set(0, lineLength /2, -linePosZ/2 - .2)
         this.add(way);
         
     }
@@ -88,13 +92,23 @@ class CabinetGroup extends Group {
         }
 
         this.config.openIndex = index;
+
+        this.children.forEach((o)=>{
+            if(o.isCabinet){
+                if(o.uuid === cabinet.uuid){
+                    o.showArchive();
+                }else{
+                    o.hideArchive();
+                }
+            }
+        })
     }
 
     drawPathway(w, dist){
         const {lineGeometry, lineMaterial} = this;
         const group = new Group();
         const mesh1 = new Mesh(lineGeometry, lineMaterial);
-        mesh1.scale.set(2,w+20,0);
+        mesh1.scale.set(2,w,0);
         const mesh2 = mesh1.clone();
         mesh2.position.set(dist, 0, 0);
         const mesh3 = mesh1.clone();

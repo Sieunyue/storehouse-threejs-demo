@@ -1,4 +1,4 @@
-import { MeshLambertMaterial, Mesh, DoubleSide, Geometry, Vector3, Vector2, Font, FontLoader, Face3, TextGeometry, BoxGeometry } from 'three';
+import { MeshLambertMaterial, Mesh, DoubleSide, Geometry, Vector3, Vector2, FontLoader, Face3, TextGeometry, BoxGeometry, BufferGeometry ,BufferAttribute} from 'three';
 import { ClickEvent } from '../control/clickEvent';
 import { cabinetConf } from '@/config';
 import CabinetItem from './CabinetItem';
@@ -12,9 +12,10 @@ const clapboardMaterial = new MeshLambertMaterial({
 
 const shellMaterial = new MeshLambertMaterial({
     side: DoubleSide,
-    // wireframe: true,
     color: 0xc0c0c0,
+    opacity: 0.1,
 });
+const shellGeometry = generateGeometry(cabinetConf.width, cabinetConf.depth, cabinetConf.height);
 
 class Cabinet extends Mesh {
     constructor(config) {
@@ -25,13 +26,15 @@ class Cabinet extends Mesh {
             depth: cabinetConf.depth,
             row: cabinetConf.row,
             col: cabinetConf.col,
+            lazy: true,
             doubleClick: (cabinet) => {},
             click: () => {},
         };
         this.config = Object.assign(defaultConf, config);
         this.name = config.name || '';
-        this.geometry = generateGeometry(this.config.width, this.config.depth, this.config.height);
+        this.geometry = shellGeometry;
         this.material = shellMaterial.clone();
+        this.isCabinet = true;
         this.init();
     }
 
@@ -81,6 +84,7 @@ class Cabinet extends Mesh {
             h = (this.config.height - (row - 1) - 0.02) / row;
         const startX = (this.config.width - w) / 2 - 0.01,
             startY = (this.config.height - h) / 2 - 0.01;
+        CabinetItem.resetGeometry(w - 1,h - 1,this.config.depth)
 
         for (let i = 0; i < row; i++) {
             const posY = startY - i * (h + 1);
@@ -90,9 +94,10 @@ class Cabinet extends Mesh {
                     ...this.config.children[i * col + j],
                     width: w - 0.03,
                     height: h - 0.03,
+                    lazy: this.config.lazy,
                     depth: this.config.depth,
                 });
-                item.position.set(posX - 0.01, 0, posY - 0.01);
+                item.position.set(posX - 0.1, 0, posY - 0.1);
                 // item.updateMatrix();
                 // this.geometry.merge(item.geometry, item.matrix);
                 this.add(item);
@@ -106,6 +111,50 @@ class Cabinet extends Mesh {
                 this.geometry.merge(board.geometry, board.matrix);
             }
         }
+    }
+
+    showArchive(){
+        if(!this.config.lazy){
+            return;
+        }
+        this.children.forEach((item)=>{
+            if(item.isCabinetItem){
+                item.addArchive();
+            }
+        })
+    }
+
+    hideArchive(){
+        if(!this.config.lazy){
+            return;
+        }
+        this.children.forEach((item)=>{
+            if(item.isCabinetItem){
+                item.removeArchive();
+            }
+        })
+    }
+
+    hide(){
+        this.material.transparent = true;
+        this.material.opacity = 0.1;
+
+        this.children.forEach((item)=>{
+            if(item.isCabinetItem){
+                item.hide();
+            }
+        })
+    }
+
+    show(){
+        this.material.transparent = false;
+        this.material.opacity = 1;
+
+        this.children.forEach((item)=>{
+            if(item.isCabinetItem){
+                item.show();
+            }
+        })
     }
 }
 
@@ -194,7 +243,6 @@ function generateGeometry(w, h, d) {
         geometry.faceVertexUvs[0][i] = [uv[0], uv[1], uv[3]];
         geometry.faceVertexUvs[0][i + 1] = [uv[1], uv[2], uv[3]];
     }
-
     return geometry;
 }
 
