@@ -1,4 +1,4 @@
-import { Scene, PerspectiveCamera, WebGLRenderer, PointLight, AmbientLight } from 'three';
+import { Scene, PerspectiveCamera, WebGLRenderer, PointLight, AmbientLight } from 'three/build/three.min.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 // three 三个基本元素，场景、相机和渲染器

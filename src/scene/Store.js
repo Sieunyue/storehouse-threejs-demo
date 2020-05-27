@@ -1,4 +1,4 @@
-import { PlaneGeometry, BoxGeometry, MeshBasicMaterial, Mesh, DoubleSide, Group, TextureLoader, RepeatWrapping ,MeshLambertMaterial} from 'three';
+import { PlaneGeometry, BoxGeometry, MeshBasicMaterial, Mesh, DoubleSide, Group, TextureLoader, RepeatWrapping ,MeshLambertMaterial} from 'three/build/three.min.js';
 
 const texture = new TextureLoader().load('../../public/static/floor2.png');
 texture.wrapS = RepeatWrapping;

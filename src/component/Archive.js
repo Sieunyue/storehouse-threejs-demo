@@ -1,4 +1,4 @@
-import {BoxGeometry, MeshLambertMaterial, Mesh} from 'three';
+import {BoxGeometry, MeshLambertMaterial, Mesh} from 'three/build/three.min.js';
 import {archiveConf} from '@/config';
 
 
@@ -26,17 +26,6 @@ class Archive extends Mesh{
                 this.geometry.merge(_mesh.geometry, _mesh.matrix);
             }
         }
-    }
-
-    hide(){
-        this.material.transparent = true;
-        this.opacity.opacity = 0;
-    }
-
-    show(){
-        this.material.transparent = false;
-        this.opacity.opacity = 1;
-
     }
 }
 

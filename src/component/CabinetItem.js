@@ -1,4 +1,4 @@
-import { MeshBasicMaterial, Mesh,  Geometry, Vector3, Vector2, Face3} from 'three';
+import { MeshBasicMaterial, Mesh,  Geometry, Vector3, Vector2, Face3} from 'three/build/three.min.js';
 import Archive from './Archive';
 import { cabinetItemConf } from '@/config';
 
@@ -66,9 +66,7 @@ class CabinetItem extends Mesh {
     hide(){
         this.material.transparent = true;
         this.material.opacity = 0;
-        this.children.forEach((item)=>{
-            item.hide();
-        })
+        this.removeArchive();
     }
 
     show(){

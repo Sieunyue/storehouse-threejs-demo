@@ -1,4 +1,4 @@
-import { Raycaster, Vector2 } from 'three';
+import { Raycaster, Vector2 } from 'three/build/three.min.js';
 import { renderer, camera } from '@/global';
 const clickObjects = [];
 const clickEventListen = {};
@@ -8,14 +8,23 @@ const mouse = new Vector2();
 let timerId = 0;
 
 function initThreeClickEvent() {
-    document.getElementsByTagName('canvas')[0].addEventListener('click', onDocumentMouseDown, false);
+    document.querySelector('#canvas-wrap').addEventListener('click', onDocumentMouseDown, false);
+    document.querySelector('#canvas-wrap').addEventListener('touchstart', onDocumentMouseDown, false);
+
+    // document.getElementsByTagName('canvas')[0].addEventListener('click', onDocumentMouseDown, false);
 }
 
 function onDocumentMouseDown(event) {
-    event.preventDefault();
-    mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
-    mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+    
+    if (event.type === 'click') {
+        mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
+        mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+    } else {
+        mouse.x = (event.touches[0].pageX / renderer.domElement.clientWidth) * 2 - 1;
+        mouse.y = -(event.touches[0].pageY / renderer.domElement.clientHeight) * 2 + 1;
+    }
 
+    
     raycaster.setFromCamera(mouse, camera);
 
     const intersects = raycaster.intersectObjects(clickObjects);
@@ -110,7 +119,6 @@ function isOnEventList(event, mesh) {
     }
     return false;
 }
-
 
 // function addClickEvent(mesh){
 //     clickObjects.push(mesh);

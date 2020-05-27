@@ -1,4 +1,4 @@
-import { MeshLambertMaterial, Mesh, DoubleSide, Geometry, Vector3, Vector2, FontLoader, Face3, TextGeometry, BoxGeometry, BufferGeometry ,BufferAttribute} from 'three';
+import { MeshLambertMaterial, Mesh, DoubleSide, Geometry, Vector3, Vector2, FontLoader, Face3, TextGeometry, BoxGeometry, BufferGeometry ,BufferAttribute} from 'three/build/three.min.js';
 import { ClickEvent } from '../control/clickEvent';
 import { cabinetConf } from '@/config';
 import CabinetItem from './CabinetItem';
@@ -12,7 +12,7 @@ const clapboardMaterial = new MeshLambertMaterial({
 
 const shellMaterial = new MeshLambertMaterial({
     side: DoubleSide,
-    color: 0xc0c0c0,
+    color: 0xC0C0C0,
     opacity: 0.1,
 });
 const shellGeometry = generateGeometry(cabinetConf.width, cabinetConf.depth, cabinetConf.height);

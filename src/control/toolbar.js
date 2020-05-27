@@ -1,7 +1,7 @@
 import './toolbar.scss';
 import { Dialog } from '@/utils/dialog';
 import { scene, control, camera, renderer } from '@/global';
-import { Vector2, Vector3, Raycaster, Ray } from 'three';
+import { Vector2, Vector3, Raycaster, Ray } from 'three/build/three.min.js';
 import { ClickEvent } from '@/control/clickEvent';
 
 const searchTemp = `<div><label>柜列号</label><input type="text" class="search" value="A2"/>
@@ -40,26 +40,22 @@ document.querySelector('.search-archive').onclick = () => {
                     if (o.getObjectByProperty('uuid', obj.uuid)) {
                         o.parent.openCabinet(o);
                     } else {
-                        o.material.transparent = true;
-                        o.material.opacity = 0.1;
+                        o.hide();
                     }
                 }
                 obj.material.transparent = false;
                 obj.material.opacity = 1;
+
                 let count = 0;
                 let timerId = setInterval(() => {
                     if (count % 2 === 0) {
-                        obj.material.transparent = false;
-                        obj.material.opacity = 1;
+                        obj.parent.material.color.set(0xff0000);
                     } else {
-                        obj.material.transparent = true;
-                        obj.material.opacity = 0;
+                        obj.parent.material.color.set(0xc0c0c0);
                     }
                     count++;
                     if (count === 8) {
                         clearInterval(timerId);
-                        obj.material.transparent = false;
-                        obj.material.opacity = 1;
                     }
                 }, 300);
                 control.saveState();
@@ -67,7 +63,7 @@ document.querySelector('.search-archive').onclick = () => {
                 control.update();
                 Dialog.close(el);
             } catch (e) {
-                console.log(e);
+                console.log(e)
                 alert('未找到该档案柜');
             }
         },
@@ -80,7 +76,8 @@ document.querySelector('.reset-camera').onclick = () => {
         const obj = scene.getObjectByName('demo' + i);
         obj.children.forEach((o)=>{
             if(o.isCabinet){
-                o.material.transparent = false;
+                o.material.color.set(0xc0c0c0);
+                o.show();
                 o.children.forEach((item)=>{
                     if(item.isCabinetItem){
                         item.material.transparent = true;

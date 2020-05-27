@@ -1,4 +1,4 @@
-import { Group, MeshBasicMaterial, PlaneGeometry, Mesh} from 'three';
+import { Group, MeshBasicMaterial, PlaneGeometry, Mesh} from 'three/build/three.min.js';
 import TWEEN from '@tweenjs/tween.js';
 import Cabinet from './Cabinet';
 import {cabinetGroupConf} from '@/config';
@@ -40,7 +40,6 @@ class CabinetGroup extends Group {
         }
         this.config.openIndex = number-1;
         const way = this.drawPathway(lineLength, lineDist/4);
-        console.log(lineLength)
         way.position.set(0, lineLength /2, -linePosZ/2 - .2)
         this.add(way);
         

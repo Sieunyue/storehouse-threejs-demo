@@ -4,7 +4,7 @@ import Stats from 'stats.js';
 import TWEEN from '@tweenjs/tween.js';
 import CabinetGroup from './component/CabinetGroup';
 import Store from '@/scene/Store';
-import { AxesHelper } from 'three';
+import { AxesHelper } from 'three/build/three.min.js';
 import { scene, camera, renderer } from './global';
 import { initThreeClickEvent } from '@/control/clickEvent';
 import { data, data1, data2, data3 } from '@/mock/archive-data';
