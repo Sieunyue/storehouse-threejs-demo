@@ -1,4 +1,15 @@
-import { MeshLambertMaterial, Mesh, DoubleSide, Geometry, Vector3, Vector2, FontLoader, Face3, TextGeometry, BoxGeometry, BufferGeometry ,BufferAttribute} from 'three/build/three.min.js';
+import {
+    MeshLambertMaterial,
+    Mesh,
+    DoubleSide,
+    Geometry,
+    Vector3,
+    Vector2,
+    FontLoader,
+    Face3,
+    TextGeometry,
+    BoxGeometry,
+} from 'three/build/three.min.js';
 import { ClickEvent } from '../control/clickEvent';
 import { cabinetConf } from '@/config';
 import CabinetItem from './CabinetItem';
@@ -12,7 +23,7 @@ const clapboardMaterial = new MeshLambertMaterial({
 
 const shellMaterial = new MeshLambertMaterial({
     side: DoubleSide,
-    color: 0xC0C0C0,
+    color: 0xc0c0c0,
     opacity: 0.1,
 });
 const shellGeometry = generateGeometry(cabinetConf.width, cabinetConf.depth, cabinetConf.height);
@@ -27,11 +38,11 @@ class Cabinet extends Mesh {
             row: cabinetConf.row,
             col: cabinetConf.col,
             lazy: true,
-            doubleClick: (cabinet) => {},
+            doubleClick: () => {},
             click: () => {},
         };
-        this.config = Object.assign(defaultConf, config);
-        this.name = config.name || '';
+        this.params = Object.assign(defaultConf, config);
+        this.name = 'Cabinet';
         this.geometry = shellGeometry;
         this.material = shellMaterial.clone();
         this.isCabinet = true;
@@ -39,33 +50,32 @@ class Cabinet extends Mesh {
     }
 
     init() {
-        const { width: w, height: h, depth: d, col, row } = this.config;
+        const { width: w, height: h, depth: d, col, row } = this.params;
         const load = new FontLoader();
         const that = this;
-        load.load('../../public/static/helvetiker_regular.typeface.json',function(font){
-            const textGeo = new TextGeometry(that.name, {
+        load.load('../../public/static/helvetiker_regular.typeface.json', function (font) {
+            const textGeo = new TextGeometry(that.params.alias, {
                 font: font,
                 size: 6,
                 height: 2,
             });
             const textmaterial = new MeshLambertMaterial({ side: DoubleSide, color: 0x0f4b69 });
             const textMesh = new Mesh(textGeo, textmaterial);
-            textMesh.rotateZ(Math.PI/2)
-            textMesh.rotateX(Math.PI/2)
-            textMesh.position.set(w/2,-6,0);
+            textMesh.rotateZ(Math.PI / 2);
+            textMesh.rotateX(Math.PI / 2);
+            textMesh.position.set(w / 2, -6, 0);
             that.add(textMesh);
         });
-       
 
         ClickEvent.on('click', this, (obj) => {
             if (this.uuid === obj.uuid) {
-                this.config.click(this);
+                this.params.click(this);
             }
         });
 
         ClickEvent.on('doubleClick', this, (obj) => {
             if (this.uuid === obj.uuid) {
-                this.config.doubleClick(this);
+                this.params.doubleClick(this);
             }
         });
 
@@ -76,86 +86,103 @@ class Cabinet extends Mesh {
         if (!(fn instanceof Function)) {
             return;
         }
-        this.config.doubleClick = fn;
+        this.params.doubleClick = fn;
     }
 
     addCabinet(row, col) {
-        const w = (this.config.width - (col - 1) - 0.02) / col,
-            h = (this.config.height - (row - 1) - 0.02) / row;
-        const startX = (this.config.width - w) / 2 - 0.01,
-            startY = (this.config.height - h) / 2 - 0.01;
-        CabinetItem.resetGeometry(w - 1,h - 1,this.config.depth)
-
+        const w = (this.params.width - (col - 1) - 0.02) / col,
+            h = (this.params.height - (row - 1) - 0.02) / row;
+        const startX = (this.params.width - w) / 2 - 0.01,
+            startY = (this.params.height - h) / 2 - 0.01;
+        CabinetItem.resetGeometry(w - 1, h - 1, this.params.depth);
         for (let i = 0; i < row; i++) {
             const posY = startY - i * (h + 1);
             for (let j = 0; j < col; j++) {
                 const posX = startX - j * (w + 1);
                 const item = new CabinetItem({
-                    ...this.config.children[i * col + j],
+                    ...this.params.children[i * col + j],
                     width: w - 0.03,
                     height: h - 0.03,
-                    lazy: this.config.lazy,
-                    depth: this.config.depth,
+                    lazy: this.params.lazy,
+                    depth: this.params.depth,
                 });
                 item.position.set(posX - 0.1, 0, posY - 0.1);
                 // item.updateMatrix();
                 // this.geometry.merge(item.geometry, item.matrix);
                 this.add(item);
                 if (i === 0 && j !== 0) {
-                    const board = drawClapboard(1, this.config.height-.2, this.config.depth, posX + w / 2 + 0.5, 0);
+                    const board = drawClapboard(1, this.params.height - 0.2, this.params.depth, posX + w / 2 + 0.5, 0);
                     this.geometry.merge(board.geometry, board.matrix);
                 }
             }
             if (i !== 0) {
-                const board = drawClapboard(this.config.width-.2, 1, this.config.depth, 0, posY + h / 2 + 0.5);
+                const board = drawClapboard(this.params.width - 0.2, 1, this.params.depth, 0, posY + h / 2 + 0.5);
                 this.geometry.merge(board.geometry, board.matrix);
             }
         }
     }
 
-    showArchive(){
-        if(!this.config.lazy){
+    showArchive() {
+        if (!this.params.lazy) {
             return;
         }
-        this.children.forEach((item)=>{
-            if(item.isCabinetItem){
+        this.children.forEach((item) => {
+            if (item.isCabinetItem) {
                 item.addArchive();
             }
-        })
+        });
     }
 
-    hideArchive(){
-        if(!this.config.lazy){
+    hideArchive() {
+        if (!this.params.lazy) {
             return;
         }
-        this.children.forEach((item)=>{
-            if(item.isCabinetItem){
+        this.children.forEach((item) => {
+            if (item.isCabinetItem) {
                 item.removeArchive();
             }
-        })
+        });
     }
 
-    hide(){
+    hide() {
         this.material.transparent = true;
         this.material.opacity = 0.1;
 
-        this.children.forEach((item)=>{
-            if(item.isCabinetItem){
+        this.children.forEach((item) => {
+            if (item.isCabinetItem) {
                 item.hide();
             }
-        })
+        });
     }
 
-    show(){
+    show() {
         this.material.transparent = false;
         this.material.opacity = 1;
 
-        this.children.forEach((item)=>{
-            if(item.isCabinetItem){
+        this.children.forEach((item) => {
+            if (item.isCabinetItem) {
                 item.show();
             }
-        })
+        });
     }
+
+    blink() {
+        const oColor = this.material.color.clone();
+        let count = 0;
+        let timerId = setInterval(() => {
+            if (count % 2 === 0) {
+                this.material.color.set(0xff0000);
+            } else {
+                this.material.color.set(oColor);
+            }
+            count++;
+            if (count === 8) {
+                clearInterval(timerId);
+            }
+        }, 300);
+    }
+
+
 }
 
 function drawClapboard(w, h, d, posX, posY) {

@@ -20,8 +20,8 @@ class CabinetItem extends Mesh {
             click: () => {},
             doubleClick: () => {},
         };
-        this.config = Object.assign(defaultConfig, config);
-        this.name = config.name || '';
+        this.params = Object.assign(defaultConfig, config);
+        this.name = 'CabinetItem';
         this.geometry = shellGeometry;
         this.material = shellMaterial.clone();
         this.init();
@@ -29,13 +29,13 @@ class CabinetItem extends Mesh {
     }
 
     async init() {
-        const { width: w, height: h, depth: d, lazy } = this.config;
+        const { width: w, height: h, depth: d, lazy } = this.params;
         // this.cabinetItem = drawShell(w, d, h);
         // this.add(this.cabinetItem);
         // this.position.set(posX, 0, posY);
 
         // 设置案卷位置原点
-        const { origin } = this.config;
+        const { origin } = this.params;
         origin[0] = w / 2 - 0.51;
         origin[1] = -h / 2;
 
@@ -49,8 +49,8 @@ class CabinetItem extends Mesh {
             return;
         }
 
-        const [x, y] = this.config.origin;
-        const num = Math.round(Math.random() * 10);
+        const [x, y] = this.params.origin;
+        const num = Math.round(Math.random() * 15);
         const archiveGroup = new Archive({isGroup: true, num: num});
         archiveGroup.position.set(x-1, 0, y+4);
         this.add(archiveGroup)
@@ -77,6 +77,12 @@ class CabinetItem extends Mesh {
                 item.show();
             }
         })
+    }
+
+    blink(){
+        this.material.transparent = false;
+        this.material.opacity = 1;
+        this.parent.blink();
     }
 
     static resetGeometry(w,h,d){

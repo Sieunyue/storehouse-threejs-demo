@@ -12,33 +12,33 @@ class CabinetGroup extends Group {
             lazy: true,
             children: []
         };
-        this.name = config.name;
-        this.config = Object.assign(defaultConfig, config);
+        this.name = 'CabinetGroup';
+        this.params = Object.assign(defaultConfig, config);
         this.lineMaterial = new MeshBasicMaterial( { color: 0x00 } );
         this.lineGeometry = new PlaneGeometry(1,1);
         this.init();
     }
 
     init() {
-        const { number} = this.config;
+        const { number} = this.params;
         let lineLength = 0, lineDist = 0, linePosZ = 0;
 
         for (let i = 0; i < number; i++) {
             const cabinet = new Cabinet({
-                ...this.config.children[i],
-                lazy: i === (number-1)?false: this.config.lazy,
-                click: (cabinet)=>{
-                    this.openCabinet(cabinet);
-                }
+                ...this.params.children[i],
+                lazy: false,
+                // click: (cabinet)=>{
+                //     this.openCabinet(cabinet);
+                // }
             });
-            cabinet.position.y = i * cabinet.config.depth;
-            lineLength += cabinet.config.depth;
-            lineDist = cabinet.config.width;
-            linePosZ = cabinet.config.height;
+            cabinet.position.y = i * (cabinet.params.depth+40);
+            lineLength = cabinet.position.y;
+            lineDist = cabinet.params.width;
+            linePosZ = cabinet.params.height;
             this.add(cabinet);
             
         }
-        this.config.openIndex = number-1;
+        this.params.openIndex = number-1;
         const way = this.drawPathway(lineLength, lineDist/4);
         way.position.set(0, lineLength /2, -linePosZ/2 - .2)
         this.add(way);
@@ -58,7 +58,7 @@ class CabinetGroup extends Group {
 
     openCabinet(cabinet) {
         const index = this.getCabinetIndex(cabinet);
-        const openIndex = this.config.openIndex;
+        const openIndex = this.params.openIndex;
 
         if (index === -1) {
             return;
@@ -90,7 +90,7 @@ class CabinetGroup extends Group {
             }
         }
 
-        this.config.openIndex = index;
+        this.params.openIndex = index;
 
         this.children.forEach((o)=>{
             if(o.isCabinet){

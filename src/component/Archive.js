@@ -8,14 +8,15 @@ const material = new MeshLambertMaterial({color: 0xC8754A});
 class Archive extends Mesh{
     constructor(config){
         super();
-        this.config = Object.assign(archiveConf, config);
+        this.params = Object.assign(archiveConf, config);
         this.material = material;
         this.geometry = geometry.clone();
+        this.name = 'Archive';
         this.init();
     }
 
     init(){
-        const {isGroup, num, width} = this.config;
+        const {isGroup, num, width} = this.params;
         if(isGroup){
             for(let i = 0; i < num; i++){
                 const _geo = geometry.clone();

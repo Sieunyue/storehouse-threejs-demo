@@ -22,4 +22,8 @@ const archiveConf = {
     depth: 8,
 };
 
-export {cabinetConf, cabinetGroupConf, cabinetItemConf, archiveConf}
+const globalConfig = {
+    backgroundColor: 0xB8D3FE,
+}
+
+export {cabinetConf, cabinetGroupConf, cabinetItemConf, archiveConf, globalConfig}

@@ -9,12 +9,12 @@
 .toolbar-icon{
     // float: right;
     display: block;
-    background: rgba($color: #fff, $alpha: .2);
+    background: rgba($color: #000, $alpha: .4);
     color: #fff;
     font-size: 22px;
     text-align: center;
     line-height: 1.5;
-    border-top: 1px solid rgba($color: #fff, $alpha: .7);
+    border-top: 1px solid rgba($color: #000, $alpha: .7);
     border-radius: 0 4px 0 0;
     cursor: pointer;
 }
@@ -36,7 +36,7 @@
     width: 0;
     height: 300px;
     padding: 10px 0;
-    background: rgba($color: #fff, $alpha: .2);
+    background: rgba($color: #000, $alpha: .4);
     border-radius: 0 0 4px 0;
     transition: width .1s;
     overflow: hidden;
