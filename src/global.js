@@ -1,6 +1,5 @@
 import { Scene, PerspectiveCamera, WebGLRenderer, PointLight, AmbientLight } from 'three/build/three.min.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { globalConfig } from '@/config';
 
 // three 三个基本元素，场景、相机和渲染器
 
@@ -10,11 +9,11 @@ const renderer = new WebGLRenderer({
     antialias: true,
 });
 
-renderer.setClearColor(globalConfig.backgroundColor, 1.0);
+renderer.setClearColor(config.globalConfig.backgroundColor, 1.0);
 renderer.shadowMap.enabled = true;
 renderer.setSize(window.innerWidth, window.innerHeight);
 
-camera.position.set(0, -200, 200);
+camera.position.set(config.globalConfig.cameraPosition.x, config.globalConfig.cameraPosition.y, config.globalConfig.cameraPosition.z);
 camera.lookAt(0, 0, 0);
 
 // 鼠标控制

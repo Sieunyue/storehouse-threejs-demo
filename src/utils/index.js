@@ -1,4 +1,6 @@
-import { scene } from '@/global';
+import { scene, control } from '@/global';
+import { Vector3 } from 'three/build/three.min.js';
+// import { globalConfig } from '@/config';
 
 const findCabinetItemById = (id) => {
     const groupList = getChildrenByName(scene, 'CabinetGroup');
@@ -15,9 +17,7 @@ const findCabinetItemById = (id) => {
     }
     return undefined;
 };
-const findCabinetItemByAlias = () => {
-  
-};
+const findCabinetItemByAlias = () => {};
 
 const getChildrenByName = (parent, name) => {
     return parent.children.filter((o) => {
@@ -35,11 +35,34 @@ const getQueryParams = (str) => {
     }
     return undefined;
 };
+
+const resetCameraPosition = () => {
+    setCameraPosition(
+        new Vector3(0, 0, 0),
+        { rx: 0, ry: 0, rz: 0 },
+        { px: config.globalConfig.cameraPosition.x, py: config.globalConfig.cameraPosition.y, pz: config.globalConfig.cameraPosition.z },
+        1
+    );
+};
+
+const setCameraPosition = (target, rotation, position, zoom) => {
+    control.target = target;
+    const { rx = 0, ry = 0, rz = 0 } = rotation;
+    control.object.rotation.set(rx, ry, rz);
+    const { px, py, pz } = position;
+    control.object.position.set(px, py, pz);
+    control.object.zoom = zoom || 1;
+    control.object.updateProjectionMatrix();
+    control.update();
+};
+
 const utils = {
     findCabinetItemByAlias,
     findCabinetItemById,
     getChildrenByName,
     getQueryParams,
+    resetCameraPosition,
+    setCameraPosition,
 };
 
 export default utils;

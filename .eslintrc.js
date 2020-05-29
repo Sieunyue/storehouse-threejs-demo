@@ -13,5 +13,8 @@ module.exports = {
     parserOptions: {},
     rules: {
 
+    },
+    global: {
+        config: false
     }
 }

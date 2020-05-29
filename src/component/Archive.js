@@ -1,14 +1,14 @@
 import {BoxGeometry, MeshLambertMaterial, Mesh} from 'three/build/three.min.js';
-import {archiveConf} from '@/config';
+// import {archiveConf} from '@/config';
 
-
+const {archiveConf} = config;
 const geometry = new BoxGeometry(archiveConf.width, archiveConf.height, archiveConf.depth);
 const material = new MeshLambertMaterial({color: 0xC8754A});
 
 class Archive extends Mesh{
-    constructor(config){
+    constructor(params){
         super();
-        this.params = Object.assign(archiveConf, config);
+        this.params = Object.assign(archiveConf, params);
         this.material = material;
         this.geometry = geometry.clone();
         this.name = 'Archive';

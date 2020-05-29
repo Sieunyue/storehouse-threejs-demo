@@ -1,10 +1,10 @@
 import { Group, MeshBasicMaterial, PlaneGeometry, Mesh} from 'three/build/three.min.js';
 import TWEEN from '@tweenjs/tween.js';
 import Cabinet from './Cabinet';
-import {cabinetGroupConf} from '@/config';
 
+const {cabinetGroupConf} = config;
 class CabinetGroup extends Group {
-    constructor(config) {
+    constructor(params) {
         super();
         const defaultConfig = {
             openIndex: 0,
@@ -13,7 +13,7 @@ class CabinetGroup extends Group {
             children: []
         };
         this.name = 'CabinetGroup';
-        this.params = Object.assign(defaultConfig, config);
+        this.params = Object.assign(defaultConfig, params);
         this.lineMaterial = new MeshBasicMaterial( { color: 0x00 } );
         this.lineGeometry = new PlaneGeometry(1,1);
         this.init();
@@ -69,7 +69,7 @@ class CabinetGroup extends Group {
             for (let s = index, e = openIndex+1; e <= s; e++) {
                 let spos = { y: cabinets[e].position.y };
                 let tween1 = new TWEEN.Tween(spos)
-                    .to({ y:  cabinets[e].position.y - cabinet.config.depth-10 }, 300)
+                    .to({ y:  cabinets[e].position.y - cabinet.params.depth-10 }, 300)
                     .easing(TWEEN.Easing.Quadratic.Out)
                     .onUpdate(() => {
                         cabinets[e].position.y = spos.y;
@@ -81,7 +81,7 @@ class CabinetGroup extends Group {
             for (let s = openIndex, e = index+1; e <= s; e++) {
                 let spos = { y: cabinets[e].position.y };
                 let tween1 = new TWEEN.Tween(spos)
-                    .to({ y:  cabinets[e].position.y + cabinet.config.depth +10 }, 300)
+                    .to({ y:  cabinets[e].position.y + cabinet.params.depth +10 }, 300)
                     .easing(TWEEN.Easing.Quadratic.Out)
                     .onUpdate(() => {
                         cabinets[e].position.y = spos.y;

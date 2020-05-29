@@ -1,6 +1,7 @@
 import { MeshBasicMaterial, Mesh,  Geometry, Vector3, Vector2, Face3} from 'three/build/three.min.js';
 import Archive from './Archive';
-import { cabinetItemConf } from '@/config';
+// import { cabinetItemConf } from '@/config';
+const {cabinetItemConf} = config;
 
 const shellMaterial = new MeshBasicMaterial({
     color: 0xff0000,
@@ -11,7 +12,7 @@ const shellMaterial = new MeshBasicMaterial({
 let shellGeometry = generateGeometry(1, 1, 1);
 
 class CabinetItem extends Mesh {
-    constructor(config) {
+    constructor(params) {
         super();
         const defaultConfig = {
             ...cabinetItemConf,
@@ -20,7 +21,7 @@ class CabinetItem extends Mesh {
             click: () => {},
             doubleClick: () => {},
         };
-        this.params = Object.assign(defaultConfig, config);
+        this.params = Object.assign(defaultConfig, params);
         this.name = 'CabinetItem';
         this.geometry = shellGeometry;
         this.material = shellMaterial.clone();
@@ -50,7 +51,7 @@ class CabinetItem extends Mesh {
         }
 
         const [x, y] = this.params.origin;
-        const num = Math.round(Math.random() * 15);
+        const num = Math.round(Math.random() * 5);
         const archiveGroup = new Archive({isGroup: true, num: num});
         archiveGroup.position.set(x-1, 0, y+4);
         this.add(archiveGroup)

@@ -13,7 +13,7 @@ import { ClickEvent } from '@/control/clickEvent';
 import ThreeBSP from '@/utils/threebsp';
 import TWEEN from '@tweenjs/tween.js';
 
-const texture = new TextureLoader().load('../../public/static/floor.png');
+const texture = new TextureLoader().load('static/img/floor.png');
 texture.wrapS = RepeatWrapping;
 texture.wrapT = RepeatWrapping;
 texture.repeat.set(10, 10);
@@ -30,7 +30,7 @@ const wallMesh = {
     }),
 };
 
-const windowTexture = new TextureLoader().load('../../public/static/window.png');
+const windowTexture = new TextureLoader().load('static/img/window.png');
 windowTexture.wrapS = RepeatWrapping;
 windowTexture.wrapT = RepeatWrapping;
 windowTexture.repeat.set(2, 1);

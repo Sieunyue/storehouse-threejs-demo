@@ -11,10 +11,11 @@ import {
     BoxGeometry,
 } from 'three/build/three.min.js';
 import { ClickEvent } from '../control/clickEvent';
-import { cabinetConf } from '@/config';
+// import { cabinetConf } from '@/config';
 import CabinetItem from './CabinetItem';
 // import { scene, camera } from '../global';
 
+const {cabinetConf} = config;
 const clapboardGeometry = new BoxGeometry(1, 1, 1);
 const clapboardMaterial = new MeshLambertMaterial({
     side: DoubleSide,
@@ -29,7 +30,7 @@ const shellMaterial = new MeshLambertMaterial({
 const shellGeometry = generateGeometry(cabinetConf.width, cabinetConf.depth, cabinetConf.height);
 
 class Cabinet extends Mesh {
-    constructor(config) {
+    constructor(params) {
         super();
         const defaultConf = {
             width: cabinetConf.width,
@@ -41,7 +42,7 @@ class Cabinet extends Mesh {
             doubleClick: () => {},
             click: () => {},
         };
-        this.params = Object.assign(defaultConf, config);
+        this.params = Object.assign(defaultConf, params);
         this.name = 'Cabinet';
         this.geometry = shellGeometry;
         this.material = shellMaterial.clone();
@@ -53,7 +54,7 @@ class Cabinet extends Mesh {
         const { width: w, height: h, depth: d, col, row } = this.params;
         const load = new FontLoader();
         const that = this;
-        load.load('../../public/static/helvetiker_regular.typeface.json', function (font) {
+        load.load('static/img/helvetiker_regular.typeface.json', function (font) {
             const textGeo = new TextGeometry(that.params.alias, {
                 font: font,
                 size: 6,

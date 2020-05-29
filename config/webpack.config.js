@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
 module.exports = function (options) {
     return {
@@ -20,9 +21,9 @@ module.exports = function (options) {
                         loader: 'babel-loader',
                         options: {
                             babelrc: false,
-                            extends: path.resolve(__dirname, "./babelrc.json")
-                        }
-                    }
+                            extends: path.resolve(__dirname, './babelrc.json'),
+                        },
+                    },
                 },
                 {
                     test: /\.(sa|sc|c)ss$/,
@@ -50,19 +51,19 @@ module.exports = function (options) {
                 },
                 {
                     test: /\.(eot|svg|ttf|woff|woff2)$/,
-                    use:{
+                    use: {
                         loader: 'file-loader',
                         options: {
-                            outputPath: 'fonts/'
-                        }
-                    }
-                }
+                            outputPath: 'fonts/',
+                        },
+                    },
+                },
             ],
         },
         resolve: {
             alias: {
-                '@':  path.resolve(__dirname, '../src/')
-            }
+                '@': path.resolve(__dirname, '../src/'),
+            },
         },
         plugins: [
             new CleanWebpackPlugin(),
@@ -74,6 +75,16 @@ module.exports = function (options) {
                 filename: 'css/[name].[hash].css',
                 chunkFilename: 'css/[id].[hash].css',
             }),
+            // new CopyWebpackPlugin([{
+            //     from: path.resolve(__dirname, '../static'),
+            //     to: 'static', // 打包后静态文件放置位置
+            //     ignore: ['.*'], //
+            // }]),
+            new CopyWebpackPlugin({
+                patterns: [
+                    { from: path.resolve(__dirname, '../static'), to: 'static', noErrorOnMissing: true},
+                  ],
+            })
             // new webpack.HotModuleReplacementPlugin(),
         ],
     };
