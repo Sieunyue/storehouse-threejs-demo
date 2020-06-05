@@ -60,4 +60,6 @@ if (uniqueId && uniqueId !== '') {
     res.parent.getWorldPosition(pos);
     util.setCameraPosition(pos, {rx: rx, ry: ry, rz: rz}, {px: x, py: y, pz: z});
     control.saveState();
+    const path = util.getQueryParams('path');
+    document.querySelector('.store-path').innerHTML = '路径：'+decodeURIComponent(path);
 }

@@ -42,21 +42,21 @@ function searchArchive() {
 
 function resetCamera() {
     utils.resetCameraPosition();
-    const obj = util.getChildrenByName(scene, 'CabinetGroup');
-    obj.forEach((group) => {
-        group.children.forEach((o) => {
-            if (o.isCabinet) {
-                o.material.color.set(0xc0c0c0);
-                o.show();
-                o.children.forEach((item) => {
-                    if (item.isCabinetItem) {
-                        item.material.transparent = true;
-                        item.material.opacity = 0;
-                    }
-                });
-            }
-        });
-    });
+    // const obj = util.getChildrenByName(scene, 'CabinetGroup');
+    // obj.forEach((group) => {
+    //     group.children.forEach((o) => {
+    //         if (o.isCabinet) {
+    //             o.material.color.set(0xc0c0c0);
+    //             o.show();
+    //             o.children.forEach((item) => {
+    //                 if (item.isCabinetItem) {
+    //                     item.material.transparent = true;
+    //                     item.material.opacity = 0;
+    //                 }
+    //             });
+    //         }
+    //     });
+    // });
 }
 
 function morenCamera() {
