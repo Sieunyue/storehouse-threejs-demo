@@ -36,7 +36,7 @@
     "@babel/runtime-corejs3": "^7.9.6",
     "@tweenjs/tween.js": "^18.5.0",
     "stats.js": "^0.17.0",
-    "three": "^0.116.1"
+    "three": "^0.137.0"
   },
   "browserslist": "> 0.25%, not dead"
 }
